@@ -23,3 +23,21 @@ ear_parameters <- tibble(year = c(2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020
                          url = c(url_2013, url_2014, url_2015, url_2016, url_2017, url_2018, url_2019, url_2020, url_2021),
                          file_name = c(txt_2013, txt_2014, txt_2015, txt_2016, txt_2017, txt_2018, txt_2019, txt_2020, txt_2021),
                          report_name = rep("ear", 9))
+
+# UWMP
+uwmp_paramters <- read.csv("data-raw/wue_datasets.csv")
+
+# WLA
+wla_parameters <- tibble(report_name = "WLA",
+                     url = "https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls",
+                     file_name = NA,
+                     year = NA)
+# CR
+cr_parameters <- tibble(report_name = "CR",
+                     url = "https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information",
+                     file_name = NA,
+                     year = NA)
+
+parameters <- bind_rows(ear_parameters, uwmp_paramters, wla_parameters, cr_parameters)
+
+current_year <- year(Sys.Date())

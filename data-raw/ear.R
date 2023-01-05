@@ -53,6 +53,7 @@ get_all_ear_water_data <- function() {
   }
   # There are two different download functions: (1) pre 2020 format, (2) 2020+ format
   # Define the parameters needed to run each function
+  ear_parameters <- filter(parameters, report_name == "ear")
   parameters_2020 <- ear_parameters |>
     filter(year >= 2020)
   parameters_pre2020 <- ear_parameters |>
@@ -129,7 +130,7 @@ ear_supply_data <- ear_data[, QuestionName := trimws(QuestionName)
   transmute("report_name" = "EAR",
             "pwsid" = WSID,
             "supplier_name" = supplier_name,
-            "year" = Year,
+            "year" = as.numeric(Year),
             "month" = month,
             "category" = ifelse(is.na(month), "supply total", "supply"),
             "use_type" = tolower(QuestionName),
@@ -156,7 +157,7 @@ ear_demand_data <- ear_data[, QuestionName := trimws(QuestionName)
   filter(!is.na(volume)) |>
   transmute("report_name" = "EAR",
             "supplier_name" = supplier_name,
-            "year" = Year,
+            "year" = as.numeric(Year),
             "month" = month,
             "category" = ifelse(is.na(month), "demand total", "demand"),
             "use_type" = tolower(QuestionName),
@@ -168,5 +169,6 @@ ear_demand_data <- ear_data[, QuestionName := trimws(QuestionName)
             ))
 
 ear_data_format <- bind_rows(ear_demand_data, ear_supply_data)
-usethis::use_data(ear_parameters, ear_data_format, internal = TRUE, overwrite = T)
+
+usethis::use_data(current_year, parameters, ear_data_format, internal = TRUE, overwrite = T)
 
