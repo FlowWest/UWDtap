@@ -1,12 +1,17 @@
 Package: uwdtap
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Pull and Combine Urban Water Reporting Datasets
 Version: 0.1.0
-Author: Who wrote it
+Authors@R:c(
+    person("Ashley", "Vizek", email = "avizek@flowwest.com", role = "cre"),
+    person("Erin", "Cain", email = "ecain@flowwest.com", role = "aut"), 
+    person("Liz", "Stebbins", email = "lstebbins@flowwest.com", role = "aut"))
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: This package supports California urban water data analysis 
+  by pulling and compilinig data across 4 state wide reporting requirements: 
+  the Urban Water Management Plan, The Conservation Report, The Water Loss Audit, 
+  and the Electronic Annual Report. 
+License: CC0
 Encoding: UTF-8
 LazyData: true
 Depends: 
