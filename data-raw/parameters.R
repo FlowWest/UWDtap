@@ -39,5 +39,4 @@ cr_parameters <- tibble(report_name = "CR",
                      year = NA)
 
 parameters <- bind_rows(ear_parameters, uwmp_paramters, wla_parameters, cr_parameters)
-
-current_year <- year(Sys.Date())
+usethis::use_data(parameters, internal = TRUE)
