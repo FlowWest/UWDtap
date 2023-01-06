@@ -275,7 +275,7 @@ get_ear_data <- function(year_selection) {
       tidyr::separate(SurveyName, c("Year", "Survey"))
   }
   ear_data <- data |>
-    mutate(QuestionName = trimws(QuestionName))
+    mutate(QuestionName = gsub(" ", "", QuestionName))
 
   # water supply and demand data are defined as fields that are either WP or WD
   ear_fields <- unique(ear_data$QuestionName)
@@ -377,6 +377,8 @@ pull_data <-
              category %in% type,
              pwsid %in% pwsid)
     }
-      return(all_data)
+      all_data_formatted <- all_data |>
+        left_join(use_type_lookup)
+      return(all_data_formatted)
   }
 

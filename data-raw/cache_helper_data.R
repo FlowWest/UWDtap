@@ -57,7 +57,14 @@ cr_parameters <- tibble(report_name = "CR",
 
 parameters <- bind_rows(ear_parameters, uwmp_paramters, wla_parameters, cr_parameters)
 
-usethis::use_data(pwsid_lookup, parameters, overwrite = T)
+demand_lookup <- read_rds("data-raw/use_type_lookup.rds")
+supply_lookup <- read_rds("data-raw/supply_type_lookup.rds")
+use_type_lookup <- bind_rows(demand_lookup |>
+                               mutate(category = "demand"),
+                             supply_lookup |>
+                               mutate(category = "supply"))
+
+usethis::use_data(pwsid_lookup, parameters, use_type_lookup, overwrite = T)
 
 
 
