@@ -1,6 +1,3 @@
-library(plotly)
-library(tidyverse)
-
 #' @title Plot Urban Water Data
 #' @description This function generates a simple visualization of Urban Water Data.
 #' @param selected_category The category that the user would like plotted.
@@ -12,11 +9,6 @@ library(tidyverse)
 #' @examples
 #' plot_data(selected_category = "demand", pwsid = "CA3610001")
 #' @export
-
-expected_data <- readRDS("../../../Downloads/supply_and_demand_volume_af_with_subcategories.rds")
-
-selected_category = "supply"
-pwsid = "CA...ect"
 
 plot_data <- function(selected_category = c("supply", "supply total", "demand",
                                             "demand total", "losses"),
