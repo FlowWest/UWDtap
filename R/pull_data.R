@@ -77,7 +77,6 @@ get_uwmp_data <- function(year_selection) {
     filter(year == year_selection)
   return(uwmp_data)
 }
-uwmp <- get_uwmp_data(2015)
 
 # WLA
 get_wla_data <- function(year_selection) {
@@ -160,7 +159,7 @@ get_wla_data <- function(year_selection) {
   return(wla_data)
 
 }
-wla <- get_wla_data(2016)
+
 # CR
 get_cr_data <- function(year_selection) {
 
@@ -276,9 +275,6 @@ get_ear_data <- function(year_selection) {
       tidyr::separate(SurveyName, c("Year", "Survey"))
   }
   ear_data <- data |>
-    filter(
-      Year %in% unique(ear_parameters$year)
-    ) |>
     mutate(QuestionName = trimws(QuestionName))
 
   # water supply and demand data are defined as fields that are either WP or WD
@@ -384,4 +380,3 @@ pull_data <-
       return(all_data)
   }
 
-test <- pull_data(year_selection = 2013)
