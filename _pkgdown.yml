@@ -1,0 +1,28 @@
+title: UWDtap
+url: https://flowwest.github.io/UWDtap/
+template:
+  bootstrap: 5
+
+home:
+  links:
+  - text: Monthly Conservation Report
+    href: https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information
+  - text: Electronic Annual Report
+    href: https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html
+  - text: Urban Water Managment Plan
+    href: https://wuedata.water.ca.gov/
+  - text: Water Loss Audit
+    href:https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls
+
+reference:
+- title: Functions
+  desc: Functions to pull and visualize urban water data
+  contents:
+  - plot_data
+
+reference:
+- title: Helper Data
+  desc: Helper data for use within data pull functions and analysis
+  contents:
+  - pwsid_lookup
+
