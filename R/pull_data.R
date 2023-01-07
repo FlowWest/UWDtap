@@ -43,7 +43,7 @@ get_uwmp_data <- function(year_selection) {
                   year = year,
                   month = NA,
                   category = "demand total",
-                  use_type = WATER_DEMAND_TYPE,
+                  use_type = tolower(WATER_DEMAND_TYPE),
                   volume_af = volume_af)
     }
     if (file_name %in% c("retail_demand", "wholesale_demand")) {
@@ -111,6 +111,7 @@ get_wla_data <- function(year_selection) {
   other_fields <- other_fields[!stringr::str_detect(other_fields, "COMMENT")] # no comments
   other_fields <- other_fields[stringr::str_detect(other_fields, "AF")] # AF (acre feet)
   other_fields <- other_fields[!stringr::str_detect(other_fields, "ERR")] # no error
+  other_fields <- other_fields[!stringr::str_detect(other_fields, "WL_WATER_LOSSES_VOL_AF")]
 
 
   # select supply use cases and supplier name, reporting year, and volume
@@ -128,8 +129,9 @@ get_wla_data <- function(year_selection) {
 
   # select demand use cases and supplier name, reporting year, and volume
   wla_demand <- wla_data_raw |>
-    select(WATER_SUPPLIER_NAME, REPORTING_YEAR, VOLUME_REPORTING_UNITS, PWS_ID_OR_OTHER_ID, all_of(demand_fields)) |>
-    pivot_longer(cols = all_of(demand_fields), names_to = "use_type", values_to = "volume") |>
+    select(WATER_SUPPLIER_NAME, REPORTING_YEAR, VOLUME_REPORTING_UNITS, PWS_ID_OR_OTHER_ID, all_of(demand_fields),
+           WL_WATER_LOSSES_VOL_AF) |>
+    pivot_longer(cols = c(all_of(demand_fields), WL_WATER_LOSSES_VOL_AF), names_to = "use_type", values_to = "volume") |>
     transmute(report_name = "WLA",
               pwsid = PWS_ID_OR_OTHER_ID,
               supplier_name = WATER_SUPPLIER_NAME,
@@ -197,7 +199,7 @@ get_cr_data <- function(year_selection) {
     pivot_longer(cols = all_of(use_types), names_to = "use_type", values_to = "volume") |>
     mutate(category = case_when(use_type %in% c("reported_final_total_potable_water_production",
                                                 "calculated_total_potable_water_production_gallons_ag_excluded") ~ "supply",
-                                use_type == "reported_non_revenue_water" ~ "other",
+                                use_type == "reported_non_revenue_water" ~ "demand",
                                 TRUE ~ "demand")) |>
     transmute(report_name = "CR",
               pwsid = pwsid,
@@ -205,7 +207,7 @@ get_cr_data <- function(year_selection) {
               year = year,
               month = month,
               category = category,
-              use_type = tolower(use_type),
+              use_type = gsub("_", " ", tolower(use_type)),
               volume_af = ifelse(volume == "NaN", NA, as.numeric(volume))) |>
     filter(year == year_selection)
 
@@ -275,7 +277,7 @@ get_ear_data <- function(year_selection) {
       tidyr::separate(SurveyName, c("Year", "Survey"))
   }
   ear_data <- data |>
-    mutate(QuestionName = trimws(QuestionName))
+    mutate(QuestionName = gsub(" ", "", QuestionName))
 
   # water supply and demand data are defined as fields that are either WP or WD
   ear_fields <- unique(ear_data$QuestionName)
@@ -377,6 +379,8 @@ pull_data <-
              category %in% type,
              pwsid %in% pwsid)
     }
-      return(all_data)
+      all_data_formatted <- all_data |>
+        left_join(use_type_lookup)
+      return(all_data_formatted)
   }
 

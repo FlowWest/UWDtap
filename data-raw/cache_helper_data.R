@@ -57,7 +57,41 @@ cr_parameters <- tibble(report_name = "CR",
 
 parameters <- bind_rows(ear_parameters, uwmp_paramters, wla_parameters, cr_parameters)
 
-usethis::use_data(pwsid_lookup, parameters, overwrite = T)
+demand_lookup <- read_rds("data-raw/use_type_lookup.rds")
+supply_lookup <- read_rds("data-raw/supply_type_lookup.rds")
+use_type_lookup <- bind_rows(demand_lookup |>
+                               mutate(category = "demand"),
+                             supply_lookup |>
+                               mutate(category = "supply")) |>
+  mutate(report_name = ifelse(report_name == "WLR", "WLA", report_name),
+         category = ifelse(report_name == "EAR" & category == "supply", "supply total", category),
+         use_group = ifelse(use_group == "recycled water", "recycled", use_group))
+
+new_additions <- tibble(use_group = c("nonpotable", "surface water","imported/purchased",
+                                      "total volume", "groundwater", "recycled",
+                                      "sold", "total volume", "agricultural irrigation",
+                                      "landscape","residential", "other","sales transfers exchanges to other agencies",
+                                      "residential","commerical industrial institutional", "landscape", "total volume",
+                                      "surface water", "other", "surface water", "groundwater",
+                                      "sales transfers exchanges to other agencies", "sales transfers exchanges to other agencies",
+                                      "recycled", "other", "commerical industrial institutional", "losses", "total volume"),
+                        report_name = c(rep("EAR",17), rep("UWMP", 8), rep("CR",2), rep("WLA",1)),
+                        use_type = c("nonpotable", "sw", "purchased", "total",
+                                     "gw", "recycled", "sold", "total", "annuala",
+                                     "annuali", "annualsf", "annualo","annualop",
+                                     "annualmf","annualci","annualli","annualtotal",
+                                     "surface water", "stormwater use", "desalinated water",
+                                     "groundwater", "transfers to other agencies",
+                                     "sales to other agencies", "recycled water demand",
+                                     "potable and raw water","reported final commercial industrial and institutional water",
+                                     "reported non revenue water", "ws_water_supplied_vol_af"),
+                        category = c(rep("supply",7), "demand", rep("demand total", 9),
+                                     rep("supply",4), rep("demand",2), rep("demand total",2), rep("demand",2), "supply total"))
+
+use_type_lookup <- use_type_lookup |>
+  bind_rows(new_additions)
+
+usethis::use_data(pwsid_lookup, parameters, use_type_lookup, overwrite = T)
 
 
 
