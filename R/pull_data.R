@@ -1,25 +1,17 @@
-library(tidyverse)
-library(httr)
-library(jsonlite)
-library(vroom)
-
-
-# Source and supporting info on data
-# All data is pulled from WUE data portal https://wuedata.water.ca.gov/
-# UWMP required every five years
+#' @title Get uwmp data
+#' @description This function pulls uwmp data from wue portal. This is a helper function used by the \code{pull_data()} function
+#' @param year_selection Year to filter data to. UWMP data is avaliable for 2015 and 2020.
+#' @source
+#' WUE data portal https://wuedata.water.ca.gov/
+#' UWMP required every five years
 # 2020 data comes from this site https://data.cnra.ca.gov/dataset/2020-uwmp-data-export-tables
 # 2015 data comes from this site https://wuedata.water.ca.gov/uwmp_export.asp
-
-
-# Pull data UWMP data from cnra and save in tempfile
-
-
+#' @export
 get_uwmp_data <- function(year_selection) {
   temp <- tempfile()
   download.file("https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_2_1_r_conv_to_af.xls", temp)
   pwsid <- read.table(temp, header = TRUE, sep = "\t", fill = TRUE) |> select(ORG_ID, PUBLIC_WATER_SYSTEM_NUMBER) |> glimpse()
   unlink(temp)
-
 
   wue_datasets <- parameters |>
     filter(report_name == "UWMP") |>
@@ -78,9 +70,13 @@ get_uwmp_data <- function(year_selection) {
   return(uwmp_data)
 }
 
-# WLA
-get_wla_data <- function(year_selection) {
+#' @title Get wla data
+#' @description This function pulls wla data from wue portal. This is a helper function used by the \code{pull_data()} function
+#' @param year_selection Year to filter data to.
+#' @source # TODO add source
+#' @export
 
+get_wla_data <- function(year_selection) {
   # download file
   temp <- tempfile()
   download.file("https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls",
@@ -112,7 +108,6 @@ get_wla_data <- function(year_selection) {
   other_fields <- other_fields[stringr::str_detect(other_fields, "AF")] # AF (acre feet)
   other_fields <- other_fields[!stringr::str_detect(other_fields, "ERR")] # no error
   other_fields <- other_fields[!stringr::str_detect(other_fields, "WL_WATER_LOSSES_VOL_AF")]
-
 
   # select supply use cases and supplier name, reporting year, and volume
   wla_supply <- wla_data_raw |>
@@ -159,10 +154,14 @@ get_wla_data <- function(year_selection) {
 
   # return
   return(wla_data)
-
 }
 
-# CR
+#' @title Get CR data
+#' @description This function pulls cr data from data.ca.gov. This is a helper function used by the \code{pull_data()} function
+#' @param year_selection Year to filter data to.
+#' @source # TODO add source
+#' @export
+
 get_cr_data <- function(year_selection) {
 
   # Download the whole dataset using a SQL query
@@ -216,8 +215,11 @@ get_cr_data <- function(year_selection) {
 }
 
 
-# Function to pull all ear water data (separate text file for each year) and
-# format to bind years together
+#' @title Get ear data
+#' @description This function pulls ear data This is a helper function used by the \code{pull_data()} function
+#' @param year_selection Year to filter data to.
+#' @source # TODO add source
+#' @export
 get_ear_data <- function(year_selection) {
   ear_parameters <- filter(parameters, report_name == "ear", year == year_selection)
   url = ear_parameters$url
@@ -360,6 +362,17 @@ get_ear_data <- function(year_selection) {
   ear_data <- bind_rows(ear_demand_data, ear_supply_data)
   return(ear_data)
 }
+
+#' @title Pull Data
+#' @description Pulls data from the CR, EAR, UWMP, and WLA and compiles it into a single format.
+#' @param type Describes type of data to pull. an be \code{"supply"},
+#' \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}, \code{other}
+#' @param year_selection Year to filter data to.
+#' @param report Specifies which report to pull data from. Can be one of \code{"EAR"}, \code{"UWMP"}
+#' \code{"CR"}, or \code{"WLA"}
+#' @source
+#' TODO add
+#' @export
 
 pull_data <-
   function(type = c("supply", "demand", "supply total", "demand total", "losses", "other"),

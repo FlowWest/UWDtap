@@ -1,20 +1,22 @@
 #' @title Plot Urban Water Data
 #' @description This function generates a simple visualization of Urban Water Data.
+#' @param data Data to plot. Must be in the format outputted from \code{pull_data()} funciton
 #' @param selected_category The category that the user would like plotted.
 #' Coverage accross reporting requirements varies by category.
 #' Can be \code{"supply"}, \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}
-#' @param mode The mode to run model in. Can be \code{"seed"}, \code{"simulate"}, \code{"calibrate"}
 #' @param pwsid The Public Water Sysetm Identification Number (PWSID) corresponding
 #' to the agency whose data you would like to visualize.
+#' @param show_subcategories Defaults to FALSE. If set to TRUE shows subcategoreis for use types.
 #' @examples
 #' plot_data(selected_category = "demand", pwsid = "CA3610001")
 #' @export
-
-plot_data <- function(selected_category = c("supply", "supply total", "demand",
+plot_data <- function(data,
+                      selected_category = c("supply", "supply total", "demand",
                                             "demand total", "losses"),
-                      pwsid) {
+                      pwsid,
+                      show_subcategories = FALSE) {
   if (show_subcategories == FALSE) {
-  filtered_data <- expected_data |>  # TODO update to be data pull function
+  filtered_data <- data |>  # TODO update to be data pull function
     filter(category == selected_category) |> # TODO can add filters for PWSID here to just show one agency (makes more sense that way)
     group_by(report_name) |>
     summarise(volume_af = sum(volume_af, na.rm = T))
@@ -25,7 +27,7 @@ plot_data <- function(selected_category = c("supply", "supply total", "demand",
            yaxis = list(title = ""))
   }
   if (show_subcategories == TRUE) {
-    filtered_data <- expected_data |>  # TODO update to be data pull function
+    filtered_data <- data |>  # TODO update to be data pull function
       filter(category == selected_category,
              # supplier_name == "Santa Fe Irrigation District"
              ) |> # TODO can add filters for PWSID here to just show one agency (makes more sense that way)

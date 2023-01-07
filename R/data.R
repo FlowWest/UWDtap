@@ -5,3 +5,12 @@
 #' plot_data(selected_category = "demand", pwsid = "CA3610001")
 "pwsid_lookup"
 
+#' @title Parameters
+#' @description This table provides links to all the sources that contain UWD.
+#' @format A tibble with 4 columns (`year`, `url`, `file_name`, `report_name`) and 23 rows
+"parameters"
+
+#' @title Use Type Lookup
+#' @description This lookup table helps map use types bewtween reports
+#' @format A tibble with 4 columns (`use_group`, `report_name`, `use_type`, `category`) and 141 rows
+"use_type_lookup"

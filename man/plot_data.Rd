@@ -5,11 +5,15 @@
 \title{Plot Urban Water Data}
 \usage{
 plot_data(
+  data,
   selected_category = c("supply", "supply total", "demand", "demand total", "losses"),
-  pwsid
+  pwsid,
+  show_subcategories = FALSE
 )
 }
 \arguments{
+\item{data}{Data to plot. Must be in the format outputted from \code{pull_data()} funciton}
+
 \item{selected_category}{The category that the user would like plotted.
 Coverage accross reporting requirements varies by category.
 Can be \code{"supply"}, \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}}
@@ -17,7 +21,7 @@ Can be \code{"supply"}, \code{"supply total"}, \code{"demand"}, \code{"demand to
 \item{pwsid}{The Public Water Sysetm Identification Number (PWSID) corresponding
 to the agency whose data you would like to visualize.}
 
-\item{mode}{The mode to run model in. Can be \code{"seed"}, \code{"simulate"}, \code{"calibrate"}}
+\item{show_subcategories}{Defaults to FALSE. If set to TRUE shows subcategoreis for use types.}
 }
 \description{
 This function generates a simple visualization of Urban Water Data.
