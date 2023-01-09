@@ -10,7 +10,7 @@ library(leaflet)
 #' summing duplicate rows of data in a county, please only use data with \code{category} "demand_total"
 #' or "supply_total".
 #' @examples
-#' map_data(data)
+#' map_county_data(data)
 #' @export
 map_county_data <- function(data) {
 
