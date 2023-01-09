@@ -2,9 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-<<<<<<< HEAD
-.DS_Store
-inst/doc
-=======
 *.DS_Store
->>>>>>> v0.1
+inst/doc
+
