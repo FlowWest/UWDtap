@@ -13,7 +13,8 @@ pwsid_raw_data <- pwsid_list_sql$result$records
 pwsid_lookup <- pwsid_raw_data |>
   janitor::clean_names() |>
   select(water_system_name,
-         pwsid = water_system_no)
+         pwsid = water_system_no,
+         county = principal_county_served)
 
 # Parameters Table
 # EAR

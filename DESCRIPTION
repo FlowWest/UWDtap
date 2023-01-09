@@ -20,6 +20,8 @@ Depends:
     httr, 
     jsonlite,
     vroom,
+    leaflet,
+    RColorBrewer,
     plotly
 RoxygenNote: 7.2.3
 Suggests: 
