@@ -31,18 +31,17 @@ plot_data <- function(data,
     filtered_data <- data |>
       filter(category == category_selection,
              pwsid == pwsid_selection) |>
-      group_by(report_name, use_type) |>
+      group_by(report_name, use_group) |>
       summarise(volume_af = sum(volume_af, na.rm = T))
 
-    colors <- c("#9A8822", "#899DA4", "#C93312", "#F8AFA8", "#DC863B", "#FDDDA0", "#74A089", "#E1BD6D", "#FAEFD1", "#DC863B")
-    plot <- ggplotly(ggplot(filter(filtered_data, !is.na(use_type)), aes(y = report_name, x = volume_af, fill = use_type)) +
+    plot <- ggplotly(ggplot(filter(filtered_data, !is.na(use_group)), aes(y = report_name, x = volume_af, fill = use_group)) +
                        geom_col() +
-                       labs(x = paste0("Volume (Acre Feet) ", category_selection, " across reports for ", pwsid), y = "") +
+                       labs(x = paste0("Volume (Acre Feet) ", category_selection, " across reports for ", pwsid_selection), y = "") +
                        theme_minimal() +
                        theme(text = element_text(size=14),
                              legend.title = element_blank(),
                              legend.text = element_text(size = 10)) +
-                       scale_fill_manual(values = colors))
+                       scale_fill_manual(values = wesanderson::wes_palette("Royal2", 23, type = "continuous")))
   }
 return(plot)
 }

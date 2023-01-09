@@ -399,7 +399,8 @@ pull_data <-
              pwsid %in% pwsid)
     }
       all_data_formatted <- all_data |>
-        left_join(use_type_lookup)
+        left_join(use_type_lookup) |>
+        select(-use_type)
       return(all_data_formatted)
   }
 
