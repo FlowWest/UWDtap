@@ -1,0 +1,13 @@
+﻿year,url,file_name,report_name
+2015,https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_4_1_r_conv_to_af.xls,retail_demand,UWMP
+2015,https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_4_3_r_view_conv_to_af.xls,retail_demand_total,UWMP
+2015,https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_4_1_w_conv_to_af.xls,wholesale_demand,UWMP
+2015,https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_4_3_w_view_conv_to_af.xls,wholesale_demand_total,UWMP
+2015,https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_6_8_r_conv_to_af.xls,retail_supply,UWMP
+2015,https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_6_8_w_conv_to_af.xls,wholesale_supply,UWMP
+2020,https://wuedata.water.ca.gov/public/uwmp_data_export_2020/uwmp_table_4_1_r_conv_to_af.xls,retail_demand,UWMP
+2020,https://wuedata.water.ca.gov/public/uwmp_data_export_2020/uwmp_table_4_3_r_v2_view.xls,retail_demand_total,UWMP
+2020,https://wuedata.water.ca.gov/public/uwmp_data_export_2020/uwmp_table_4_1_w_conv_to_af.xls,wholesale_demand,UWMP
+2020,https://wuedata.water.ca.gov/public/uwmp_data_export_2020/uwmp_table_4_3_w_view_conv_to_af.xls,wholesale_demand_total,UWMP
+2020,https://wuedata.water.ca.gov/public/uwmp_data_export_2020/uwmp_table_6_8_r_conv_to_af.xls,retail_supply,UWMP
+2020,https://wuedata.water.ca.gov/public/uwmp_data_export_2020/uwmp_table_6_8_w_conv_to_af.xls,wholesale_supply,UWMP
