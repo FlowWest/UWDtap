@@ -23,6 +23,10 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 The /code{"map_data"} function allows users to visualize differences in water data by county. Our hope is that by connecting publicly-accessible reports with mapping functionality, water data could be qualitatively connected with other geographically-linked environmental and social analyses. For example, geospatial data is used in analyses relating to [Social Determinants of Health](https://www.cdc.gov/places/social-determinants-of-health-and-places-data/index.html) and [water quality](https://www.epa.gov/waterdata/water-quality-data-download). Further, data gaps have been cited as a barrier in social and economic dimensions of water in California, suggesting that increasing accessibility to machine-readabale, transparent, and publicly available datasets, including those regarding water supply, could further such analyses (https://www.liebertpub.com/doi/full/10.1089/ees.2020.0315, Goddard, Ray, Balazs).
 
+
+# Example of connecting county-level water data, water supply, and the California Communities Environmental Health Screening Tool:
+https://oehha.ca.gov/calenviroscreen/report/calenviroscreen-40
+
 ```{r, echo = FALSE}
 # example of using county-level data
 enviro_screen_data_raw <- readxl::read_xlsx(here::here("data-raw", "example", "cal_enviroscreen_data.xlsx")) |> 
