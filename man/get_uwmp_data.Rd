@@ -6,6 +6,9 @@
 \source{
 WUE data portal https://wuedata.water.ca.gov/
 UWMP required every five years
+2020 data comes from this site https://data.cnra.ca.gov/dataset/2020-uwmp-data-export-tables
+2015 data comes from this site https://wuedata.water.ca.gov/uwmp_export.asp
+\href{https://wuedata.water.ca.gov/}{Urban Water Management Plan (UWMP)}
 }
 \usage{
 get_uwmp_data()

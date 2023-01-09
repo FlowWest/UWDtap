@@ -1,7 +1,8 @@
 title: UWDtap
-url: https://flowwest.github.io/UWDtap/
+url: https://flowwest.github.io/uwdap/
 template:
-  bootstrap: 5
+  params:
+    bootswatch: flatly
 
 home:
   links:
@@ -19,8 +20,9 @@ reference:
 - title: Functions
   desc: Functions to pull and visualize urban water data
   contents:
-  - plot_data
   - pull_data
+  - plot_data
+  - get_data_summary
 
 - title: Helper Data
   desc: Helper data for use within data pull functions and analysis
@@ -37,3 +39,18 @@ reference:
   - get_uwmp_data
   - get_wla_data
 
+navbar:
+  structure:
+    left:  [home, reference, articles, news]
+    right: [github]
+  type: default
+  left:
+  - text: 'Reference'
+    href: reference/index.html
+  - text: 'News'
+    href: news/index.html
+
+repo:
+ url:
+  home: https://github.com/flowwest/uwdtap
+  issue: https://github.com/flowwest/uwdtap/issues/

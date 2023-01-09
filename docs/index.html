@@ -4,11 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="This package supports California urban water data analysis 
-  by pulling and compilinig data across 4 state wide reporting requirements: 
-  the Urban Water Management Plan, The Conservation Report, The Water Loss Audit, 
-  and the Electronic Annual Report. ">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pull and Combine Urban Water Reporting Datasets • UWDtap</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -16,71 +12,87 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
-<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Pull and Combine Urban Water Reporting Datasets">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
+<meta property="og:title" content="Pull and Combine Urban Water Reporting Datasets">
 <meta property="og:description" content="This package supports California urban water data analysis 
   by pulling and compilinig data across 4 state wide reporting requirements: 
   the Urban Water Management Plan, The Conservation Report, The Water Loss Audit, 
   and the Electronic Annual Report. ">
-<meta property="og:image" content="https://flowwest.github.io/UWDtap/logo.png">
+<meta property="og:image" content="https://flowwest.github.io/uwdap/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
-    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+<body data-spy="scroll" data-target="#toc">
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
-    
-    <a class="navbar-brand me-2" href="index.html">UWDtap</a>
+    <div class="container template-home">
+      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">UWDtap</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
+      </span>
+    </div>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
-
-    
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="reference/index.html">Reference</a>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+<li>
+  <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">News</a>
 </li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/flowwest/uwdtap" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
-
-    
+<!--/.nav-collapse -->
   </div>
-</nav><div class="container template-home">
-<div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="uwdtap-">UWDtap 
-<a class="anchor" aria-label="anchor" href="#uwdtap-"></a>
-</h1>
+<!--/.container -->
 </div>
+<!--/.navbar -->
+
+      
+
+      </header><div class="row">
+  <div class="contents col-md-9">
+
+<div class="section level1">
+<div class="page-header"><h1 id="uwdtap-">UWDtap <a href="https://FlowWest.github.io/UWDtap" class="external-link"><img src="reference/figures/logo.png" align="right" height="300" style="float:right; height:300px;"></a>
+<a class="anchor" aria-label="anchor" href="#uwdtap-"></a>
+</h1></div>
 </div>
 <div class="section level1">
 <h1 id="what-is-uwdtap">What is UWDtap?<a class="anchor" aria-label="anchor" href="#what-is-uwdtap"></a>
 </h1>
-<p>UWDtap connects four distinct water reporting datasets to allow users to download and compile urban water data across reporting requirements with a single function call. UWDtap pulls data from the following reports:</p>
+<p>UWDtap connects four distinct water reporting datasets to allow users to download and compile urban water data across California State Department of Water Resources (DWR) and California State Water Resources Control Board (SWRCB) reporting requirements with a single function call. UWDtap pulls data from the following reports:</p>
 <ul>
 <li><a href="https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information" class="external-link">Conservation Report (CR)</a></li>
 <li><a href="https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html" class="external-link">Electronic Annual Report (EAR)</a></li>
 <li><a href="https://wuedata.water.ca.gov/" class="external-link">Urban Water Management Plan (UWMP)</a></li>
 <li><a href="https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls" class="external-link">Water Loss Audit (WLA)</a></li>
 </ul>
-<p>Many retail and wholesale water agencies across California are required to submit these reports to the Department of Water Resources or the State Water Board. Currently a user must dowload many datasets from 4 distinct web portals to preform any analysis on urban water data. The data are not standardized across reporting requirements even through many reporting requirements collect the same data. The goal of this package is to provide a service that pulls data and preforms basic standardization - generating analysis ready data.</p>
+<p>Many retail and wholesale water agencies across California are required to submit these reports to DWR and SWRCB. To access and use data, a user must download many excel or text files from four distinct web portals. UWDtap makes data across these four urban water reports easily accessible and interoperable. UWDtap provides the groundwork for innovative analysis that could be used to support data driven decision making, the development of dashboards and data visualizations, and also provides a helpful tool that could be used for data quality checks. The goal of this package is to provide a service that pulls data and performs basic standardization for analysis ready data.</p>
 </div>
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -109,18 +121,40 @@ $ category      &lt;chr&gt; "demand", "demand", "demand", "demand", "demand", "d
 $ use_type      &lt;chr&gt; "multi-family", "commercial", "industrial", "landscape", "other potable", "losses", "single family", "in…
 $ volume_af     &lt;dbl&gt; 162, 809, 0, 82, 1, 987, 2606, 2410, 4245, 1064, 5463, 83, 4483, 1569, 0, 7190, 463, 18762, 7813, 2994, …
 $ use_group     &lt;chr&gt; "residential", "commerical industrial institutional", "commerical industrial institutional", "landscape"…</code></pre>
-<p>Visualize these data for a specific category and pwsid,</p>
+<p>Summarize these data across all years for a specific category and report,</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># summarize data from all reporting requirements for total demand</span></span>
+<span><span class="va">demand_summary</span> <span class="op">&lt;-</span> <span class="fu">pull_data_summary</span><span class="op">(</span>category_selection <span class="op">=</span> <span class="st">"demand total"</span><span class="op">)</span></span></code></pre></div>
+<pre><code>demand_summary |&gt; glimpse()
+
+Rows: 10,150
+Columns: 9
+Groups: report_name, year, month, category [248]
+$ report_name &lt;chr&gt; "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP…
+$ year        &lt;dbl&gt; 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2020, 2020, 2020, 2020, 2…
+$ month       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ category    &lt;chr&gt; "demand total", "demand total", "demand total", "demand total", "demand total", "dema…
+$ use_type    &lt;chr&gt; "potable and raw water", "potable and raw water", "potable and raw water", "potable a…
+$ n           &lt;int&gt; 530, 530, 530, 530, 530, 530, 530, 530, 530, 530, 507, 507, 507, 507, 507, 507, 507, …
+$ use_group   &lt;chr&gt; "other", "other", "other", "other", "other", "recycled", "recycled", "recycled", "rec…
+$ statistic   &lt;chr&gt; "mean", "median", "q25", "q75", "sd", "mean", "median", "q25", "q75", "sd", "mean", "…
+$ volume_af   &lt;dbl&gt; 28877.4750, 8877.0000, 3384.6097, 21984.5000, 141415.9556, 2008.1464, 593.5650, 104.0…</code></pre>
+<p>Visualize these data for a specific category and pwsid,</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">urban_water_data</span> <span class="op">|&gt;</span> </span>
-<span>     <span class="fu"><a href="reference/plot_data.html">plot_data</a></span><span class="op">(</span>selected_category <span class="op">=</span> <span class="st">"supply"</span>,</span>
-<span>               pwsid <span class="op">=</span> <span class="st">""</span>, </span>
-<span>               show_subcategories <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="reference/plot_data.html">plot_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, category_selection <span class="op">=</span> <span class="st">"demand"</span>, </span>
+<span>          pwsid_selection <span class="op">=</span> <span class="st">"CA0710001"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="https://github.com/FlowWest/uwdtap/blob/v0.1/man/figures/demand_plot.png"></p>
 <p>Note: The package does not QA/QC data. It does preform basic mapping of fields so that data can be compared across reports.</p>
 </div>
 
-  </main><aside class="col-md-3"><div class="links">
+  </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://github.com/flowwest/uwdtap" class="external-link">Browse source code</a></li>
 <li><a href="https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information" class="external-link">Monthly Conservation Report</a></li>
 <li><a href="https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html" class="external-link">Electronic Annual Report</a></li>
 <li><a href="https://wuedata.water.ca.gov/" class="external-link">Urban Water Managment Plan</a></li>
@@ -154,24 +188,25 @@ $ use_group     &lt;chr&gt; "residential", "commerical industrial institutional"
 
 
 
-  </aside>
+  </div>
 </div>
 
 
-    <footer><div class="pkgdown-footer-left">
+      <footer><div class="copyright">
   <p></p>
 <p>Developed by Ashley Vizek, Erin Cain, Liz Stebbins.</p>
 </div>
 
-<div class="pkgdown-footer-right">
+<div class="pkgdown">
   <p></p>
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
-    </footer>
+      </footer>
 </div>
 
   
+
 
   
 

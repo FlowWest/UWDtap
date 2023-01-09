@@ -21,8 +21,9 @@ Depends:
     jsonlite,
     vroom,
     leaflet,
-    RColorBrewer
+    RColorBrewer,
+    plotly
 RoxygenNote: 7.2.3
 Suggests: 
-    Plotly 
+ 
 

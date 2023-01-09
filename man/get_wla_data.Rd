@@ -4,7 +4,7 @@
 \alias{get_wla_data}
 \title{Get wla data}
 \source{
-# TODO add source
+\href{https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls}{Water Loss Audit (WLA)}
 }
 \usage{
 get_wla_data()
