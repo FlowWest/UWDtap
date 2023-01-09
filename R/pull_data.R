@@ -363,17 +363,19 @@ get_ear_data <- function(year_selection) {
 }
 
 #' @title Pull Data
-#' @description Pulls data from the CR, EAR, UWMP, and WLA and compiles it into a single format.
+#' @description Pull one year of data from the CR, EAR, UWMP, and WLA and compiles it into a single format.
 #' @param category_selection Describes type of data to pull. an be \code{"supply"},
 #' \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}, \code{other}
-#' @param year_selection Year to filter data to.
+#' @param year_selection One year to filter data to (ex \code{2016}).
 #' @param report_selection Specifies which report to pull data from. Can be one of \code{"EAR"}, \code{"UWMP"}
 #' \code{"CR"}, or \code{"WLA"}
+#' @return A table containing 8 columns: \code{report_name}, \cod{pwsid}, \code{supplier_name}, \code{year}, \code{month},
+#' \code{category}, \code{volume_af}, \code{use_group}
 #' @source
 #' Get Summary Data pulls data from the following reports:
-#' \href{https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information}{Conservation Report (CR)}
-#' \href{https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html}{Electronic Annual Report (EAR)}
-#' \href{https://wuedata.water.ca.gov/}{Urban Water Management Plan (UWMP)}
+#' \href{https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information}{Conservation Report (CR)},
+#' \href{https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html}{Electronic Annual Report (EAR)},
+#' \href{https://wuedata.water.ca.gov/}{Urban Water Management Plan (UWMP)},
 #' \href{https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls}{Water Loss Audit (WLA)}
 #' @export
 

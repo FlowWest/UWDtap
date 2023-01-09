@@ -15,16 +15,16 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, include = FALSE}
-library(uwdtap)
+library(UWDtap)
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
 
 The ```map_county_data``` function allows users to visualize water supply and demand by county, both by coloring counties according to their relative supply or demand values and by showing the number of urban water suppliers. By connecting the Public Water System ID (PWSID) values in the datasets to their principal counties, the ```map_county_data``` function creates a simple visualization that facilitates easy geographical comparison.
 
-For example, we can visualize total demand by county from all available reports in 2015.
+For example, we can visualize total demand by county from all available reports in 2016.
 
-```{r}
+```{r, messages = FALSE, warnings = FALSE}
 # pull data and specify "demand_total" and years
 data <- pull_data(category_selection = "demand total", year_selection = 2016) |> 
   glimpse()

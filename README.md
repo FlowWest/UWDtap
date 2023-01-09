@@ -78,7 +78,7 @@ urban_water_data |>
           pwsid_selection = "CA0710001")
 ```
 
-![](https://github.com/FlowWest/uwdtap/blob/v0.1/man/figures/demand_plot.png)
+![](https://github.com/FlowWest/UWDtap/blob/main/man/figures/demand_plot.png)
 
 Note: The package does not QA/QC data. It does preform basic mapping of fields so that data can be compared across reports.
 
