@@ -7,7 +7,7 @@
 # 2020 data comes from this site https://data.cnra.ca.gov/dataset/2020-uwmp-data-export-tables
 # 2015 data comes from this site https://wuedata.water.ca.gov/uwmp_export.asp
 #' @export
-get_uwmp_data <- function(year_selection) {
+get_uwmp_data <- function() {
   temp <- tempfile()
   download.file("https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_2_1_r_conv_to_af.xls", temp)
   pwsid <- read.table(temp, header = TRUE, sep = "\t", fill = TRUE) |> select(ORG_ID, PUBLIC_WATER_SYSTEM_NUMBER) |> glimpse()
@@ -65,8 +65,7 @@ get_uwmp_data <- function(year_selection) {
     return(reformated_data)
   }
 
-  uwmp_data <- purrr::pmap(wue_datasets, read_table) |> reduce(bind_rows) |>
-    filter(year == year_selection)
+  uwmp_data <- purrr::pmap(wue_datasets, read_table) |> reduce(bind_rows)
   return(uwmp_data)
 }
 
@@ -76,7 +75,7 @@ get_uwmp_data <- function(year_selection) {
 #' @source # TODO add source
 #' @export
 
-get_wla_data <- function(year_selection) {
+get_wla_data <- function() {
   # download file
   temp <- tempfile()
   download.file("https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls",
@@ -162,7 +161,7 @@ get_wla_data <- function(year_selection) {
 #' @source # TODO add source
 #' @export
 
-get_cr_data <- function(year_selection) {
+get_cr_data <- function() {
 
   # Download the whole dataset using a SQL query
   conservation_report_url_sql <- paste0("https://data.ca.gov/api/3/action/",
@@ -207,8 +206,7 @@ get_cr_data <- function(year_selection) {
               month = month,
               category = category,
               use_type = gsub("_", " ", tolower(use_type)),
-              volume_af = ifelse(volume == "NaN", NA, as.numeric(volume))) |>
-    filter(year == year_selection)
+              volume_af = ifelse(volume == "NaN", NA, as.numeric(volume)))
 
   return(conservation_report_data)
 
@@ -252,7 +250,7 @@ get_ear_data <- function(year_selection) {
           Results = Order,
           Old = SectionID,
           QuesID = QuestionResults,
-          WSID = OldShortName_QuestionText) |>
+          SurvID = OldShortName_QuestionText) |>
         dplyr::select(-c(WSSurveyID, QuestionID, SectionID, Order, QuestionName,
                          QuestionResults, OldShortName_QuestionText)) |>
         dplyr::rename(SectionID = Section,
@@ -261,7 +259,7 @@ get_ear_data <- function(year_selection) {
                       QuestionResults = Results,
                       OldShortName_QuestionText = Old,
                       QuestionID = QuesID,
-                      WSSurveyID = WSID)
+                      WSSurveyID = SurvID)
     } else {
       data <- data
     }
@@ -379,9 +377,12 @@ pull_data <-
            year_selection,
            report = c("EAR", "UWMP", "CR", "WLA"),
            pwsid, ...) {
-      cr <- get_cr_data(year_selection, ...)
-      wla <- get_wla_data(year_selection, ...)
-      uwmp <- get_uwmp_data(year_selection, ...)
+      cr <- get_cr_data() |>
+        filter(year == year_selection)
+      wla <- get_wla_data() |>
+        filter(year == year_selection)
+      uwmp <- get_uwmp_data() |>
+        filter(year == year_selection)
       ear <- get_ear_data(year_selection, ...)
       data <- bind_rows(uwmp, wla, cr, ear)
     if (missing(pwsid)) {
@@ -397,3 +398,23 @@ pull_data <-
       return(all_data_formatted)
   }
 
+get_summary <- function(type = c("supply", "demand", "supply total", "demand total", "losses", "other"),
+                        report = c("EAR", "UWMP", "CR", "WLA")) {
+  wla <- get_wla_data()
+  cr <- get_cr_data()
+  uwmp <- get_uwmp_data()
+  data <- bind_rows(wla, cr, uwmp) |>
+    group_by(report_name, year, month, category, use_type) |>
+    summarise(mean = mean(volume_af, na.rm = T),
+              median = median(volume_af, na.rm = T),
+              q25 = quantile(volume_af, probs = 0.25, na.rm = T),
+              q75 = quantile(volume_af, probs = 0.75, na.rm = T),
+              sd = sd(volume_af, na.rm = T),
+              n = length(unique(pwsid))) |>
+    bind_rows(ear_summary) |>
+    left_join(use_type_lookup) |>
+    pivot_longer(cols = c(mean, median, q25, q75, sd),
+                 names_to = "statistic",
+                 values_to = "volume_af" )
+
+}
