@@ -4,7 +4,7 @@
 \alias{get_ear_data}
 \title{Get ear data}
 \source{
-# TODO add source
+\href{https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html}{Electronic Annual Report (EAR)}
 }
 \usage{
 get_ear_data(year_selection)

@@ -1,7 +1,6 @@
-# UWDtap <a href='https://FlowWest.github.io/UWDtap'><img src='man/figures/logo.png' align ="right" height="300" /></a> 
+# UWDtap <a href='https://FlowWest.github.io/UWDtap'><img src='man/figures/logo.png' align="right" height="200" style="float:right; height:200px;"/></a> 
 
 # What is UWDtap?
-
 UWDtap connects four distinct water reporting datasets to allow users to download and compile urban water data across reporting requirements with a single function call. UWDtap pulls data from the following reports:
 
 * [Conservation Report (CR)](https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information)
