@@ -1,7 +1,8 @@
 title: UWDtap
 url: https://flowwest.github.io/uwdap/
 template:
-  bootstrap: 5
+  params:
+    bootswatch: flatly
 
 home:
   links:
