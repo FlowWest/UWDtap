@@ -36,8 +36,12 @@ data <- get_data()
 pwsid_data <- load(pwsid_lookup)
 
 enviro_screen <- left_join(data, pwsid_data, by = "pwsid") |> 
-  group_by(county) |> 
+  group_by(county) |>
+    summarise(total_county_af = sum(volume_af, na.rm = T),
+              no_urban_water_suppliers = n_distinct(supplier_name)) |>
+    distinct(county, total_county_af, no_urban_water_suppliers) |> 
   left_join(enviro_screen_data_raw, by = "county") |> 
+  glimpse()
   
   
   
