@@ -7,11 +7,13 @@
 map_county_data(data)
 }
 \arguments{
-\item{data}{Data to plot. Must be in the format outputted from \code{pull_data()} function}
+\item{data}{Data to plot. Must be in the format outputted from \code{pull_data()} function and to avoid
+summing duplicate rows of data in a county, please only use data with \code{category} "demand_total"
+or "supply_total".}
 }
 \description{
 This function generates a county-level map of Urban Water Data.
 }
 \examples{
-map_data(data)
+map_county_data(data)
 }

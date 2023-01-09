@@ -26,7 +26,7 @@ For example, we can visualize total demand by county from all available reports 
 
 ```{r}
 # pull data and specify "demand_total" and years
-data <- pull_data(type = "demand total", year_selection = 2016) |> 
+data <- pull_data(category_selection = "demand total", year_selection = 2016) |> 
   glimpse()
 
 # map data
@@ -36,7 +36,7 @@ map_county_data(data)
 Alternatively, the data can be pulled and mapped using the pipe function:
 
 ```{r, eval = FALSE}
-pull_data(type = "supply total", year_selection = 2016) |> 
+pull_data(category_selection = "supply total", year_selection = 2016) |> 
   map_county_data()
 ```
 

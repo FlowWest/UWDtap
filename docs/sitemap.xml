@@ -4,6 +4,12 @@
     <loc>https://flowwest.github.io/uwdap/404.html</loc>
   </url>
   <url>
+    <loc>https://flowwest.github.io/uwdap/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://flowwest.github.io/uwdap/articles/mapping-urban-water-data.html</loc>
+  </url>
+  <url>
     <loc>https://flowwest.github.io/uwdap/authors.html</loc>
   </url>
   <url>
@@ -32,6 +38,9 @@
   </url>
   <url>
     <loc>https://flowwest.github.io/uwdap/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://flowwest.github.io/uwdap/reference/map_county_data.html</loc>
   </url>
   <url>
     <loc>https://flowwest.github.io/uwdap/reference/parameters.html</loc>

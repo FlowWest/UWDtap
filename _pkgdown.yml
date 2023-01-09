@@ -23,6 +23,7 @@ reference:
   - pull_data
   - plot_data
   - get_data_summary
+  - map_county_data
 
 - title: Helper Data
   desc: Helper data for use within data pull functions and analysis
@@ -47,6 +48,8 @@ navbar:
   left:
   - text: 'Reference'
     href: reference/index.html
+  - text: 'Articles'
+    href: articles/mapping-urban-water-data.html
   - text: 'News'
     href: news/index.html
 

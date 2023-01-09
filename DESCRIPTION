@@ -2,7 +2,7 @@ Package: uwdtap
 Type: Package
 Title: Pull and Combine Urban Water Reporting Datasets
 Version: 0.1.0
-Authors@R:c(
+Authors@R: c(
     person("Ashley", "Vizek", email = "avizek@flowwest.com", role = "cre"),
     person("Erin", "Cain", email = "ecain@flowwest.com", role = "aut"), 
     person("Liz", "Stebbins", email = "lstebbins@flowwest.com", role = "aut"))
@@ -25,5 +25,5 @@ Depends:
     plotly
 RoxygenNote: 7.2.3
 Suggests: 
- 
-
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
