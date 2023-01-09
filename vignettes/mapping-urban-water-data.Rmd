@@ -14,10 +14,39 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, include = FALSE}
 library(uwdtap)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
 # Mapping county-level urban water data
 
-The /code{"map_data"} function allows users to visualize differences in water data by county. Our hope is that by connecting publicly-accessible reports with mapping functionality, water data could be qualitatively connected with other geographically-linked environmental and social analyses. For example, geospatial data is used in analyses relating to [Social Determinants of Health](https://www.cdc.gov/places/social-determinants-of-health-and-places-data/index.html) and [water quality](https://www.epa.gov/waterdata/water-quality-data-download). Further, data gaps have been cited as a barrier in social and economic dimensions of water in California, suggesting that increasing accessibility to machine-readabale, transparent, and publicly available datasets, including those regarding water supply, could further such analyses (https://www.liebertpub.com/doi/full/10.1089/ees.2020.0315, Goddard, Ray, Balazs).  
+The /code{"map_data"} function allows users to visualize differences in water data by county. Our hope is that by connecting publicly-accessible reports with mapping functionality, water data could be qualitatively connected with other geographically-linked environmental and social analyses. For example, geospatial data is used in analyses relating to [Social Determinants of Health](https://www.cdc.gov/places/social-determinants-of-health-and-places-data/index.html) and [water quality](https://www.epa.gov/waterdata/water-quality-data-download). Further, data gaps have been cited as a barrier in social and economic dimensions of water in California, suggesting that increasing accessibility to machine-readabale, transparent, and publicly available datasets, including those regarding water supply, could further such analyses (https://www.liebertpub.com/doi/full/10.1089/ees.2020.0315, Goddard, Ray, Balazs).
+
+```{r, echo = FALSE}
+# example of using county-level data
+enviro_screen_data_raw <- readxl::read_xlsx(here::here("data-raw", "example", "cal_enviroscreen_data.xlsx")) |> 
+  janitor::clean_names() |> 
+  mutate(california_county = tolower(california_county)) |> 
+  select(california_county, score = ces_4_0_score,
+         percentile = ces_4_0_percentile, 
+         percentile_range = ces_4_0_percentile_range) 
+
+data <- get_data()
+pwsid_data <- load(pwsid_lookup)
+
+enviro_screen <- left_join(data, pwsid_data, by = "pwsid") |> 
+  group_by(county) |> 
+  left_join(enviro_screen_data_raw, by = "county") |> 
+  
+  
+  
+```
+
+https://oehha.ca.gov/calenviroscreen/about-calenviroscreen
+
+https://regionalchange.ucdavis.edu/sites/g/files/dgvnsk986/files/inline-files/The%20Struggle%20for%20Water%20Justice%20APPENDICES.pdf
+
+https://www.buttecounty.net/waterresourceconservation/waterinventoryandanalysis
+
+https://pubs.rsc.org/en/content/chapter/bk9781849730198-00093/978-1-84973-019-8
