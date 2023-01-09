@@ -1,4 +1,4 @@
-# UWDtap <a href='https://FlowWest.github.io/UWDtap'><img src='man/figures/logo.png' align="right" height="200" style="float:right; height:200px;"/></a> 
+# UWDtap <a href='https://FlowWest.github.io/UWDtap'><img src='man/figures/logo.png' align="right" height="300" style="float:right; height:300px;"/></a> 
 
 # What is UWDtap?
 UWDtap connects four distinct water reporting datasets to allow users to download and compile urban water data across California State Department of Water Resources (DWR) and California State Water Resources Control Board (SWRCB) reporting requirements with a single function call. UWDtap pulls data from the following reports:
@@ -9,8 +9,6 @@ UWDtap connects four distinct water reporting datasets to allow users to downloa
 * [Water Loss Audit (WLA)](https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls)
 
 Many retail and wholesale water agencies across California are required to submit these reports to DWR and SWRCB. To access and use data, a user must download many excel or text files from four distinct web portals. UWDtap makes data across these four urban water reports easily accessible and interoperable. UWDtap provides the groundwork for innovative analysis that could be used to support data driven decision making, the development of dashboards and data visualizations, and also provides a helpful tool that could be used for data quality checks.  The goal of this package is to provide a service that pulls data and performs basic standardization for analysis ready data.
-
-
 
 
 # Installation
@@ -76,10 +74,12 @@ Visualize these data for a specific category and pwsid,
 
 ```r 
 urban_water_data |> 
-     plot_data(selected_category = "supply",
-               pwsid = "", 
-               show_subcategories = FALSE)
+    plot_data(data = data, category_selection = "demand", 
+          pwsid_selection = "CA0710001")
 ```
+
+![](https://github.com/FlowWest/uwdtap/blob/v0.1/man/figures/demand_plot.png)
+
 Note: The package does not QA/QC data. It does preform basic mapping of fields so that data can be compared across reports.
 
   

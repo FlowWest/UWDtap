@@ -83,14 +83,14 @@
 <div class="section level1">
 <h1 id="what-is-uwdtap">What is UWDtap?<a class="anchor" aria-label="anchor" href="#what-is-uwdtap"></a>
 </h1>
-<p>UWDtap connects four distinct water reporting datasets to allow users to download and compile urban water data across reporting requirements with a single function call. UWDtap pulls data from the following reports:</p>
+<p>UWDtap connects four distinct water reporting datasets to allow users to download and compile urban water data across California State Department of Water Resources (DWR) and California State Water Resources Control Board (SWRCB) reporting requirements with a single function call. UWDtap pulls data from the following reports:</p>
 <ul>
 <li><a href="https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information" class="external-link">Conservation Report (CR)</a></li>
 <li><a href="https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html" class="external-link">Electronic Annual Report (EAR)</a></li>
 <li><a href="https://wuedata.water.ca.gov/" class="external-link">Urban Water Management Plan (UWMP)</a></li>
 <li><a href="https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls" class="external-link">Water Loss Audit (WLA)</a></li>
 </ul>
-<p>Many retail and wholesale water agencies across California are required to submit these reports to the Department of Water Resources or the State Water Board. Currently a user must dowload many datasets from 4 distinct web portals to preform any analysis on urban water data. The data are not standardized across reporting requirements even through many reporting requirements collect the same data. The goal of this package is to provide a service that pulls data and preforms basic standardization - generating analysis ready data.</p>
+<p>Many retail and wholesale water agencies across California are required to submit these reports to DWR and SWRCB. To access and use data, a user must download many excel or text files from four distinct web portals. UWDtap makes data across these four urban water reports easily accessible and interoperable. UWDtap provides the groundwork for innovative analysis that could be used to support data driven decision making, the development of dashboards and data visualizations, and also provides a helpful tool that could be used for data quality checks. The goal of this package is to provide a service that pulls data and performs basic standardization for analysis ready data.</p>
 </div>
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -119,12 +119,30 @@ $ category      &lt;chr&gt; "demand", "demand", "demand", "demand", "demand", "d
 $ use_type      &lt;chr&gt; "multi-family", "commercial", "industrial", "landscape", "other potable", "losses", "single family", "in…
 $ volume_af     &lt;dbl&gt; 162, 809, 0, 82, 1, 987, 2606, 2410, 4245, 1064, 5463, 83, 4483, 1569, 0, 7190, 463, 18762, 7813, 2994, …
 $ use_group     &lt;chr&gt; "residential", "commerical industrial institutional", "commerical industrial institutional", "landscape"…</code></pre>
-<p>Visualize these data for a specific category and pwsid,</p>
+<p>Summarize these data across all years for a specific category and report,</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># summarize data from all reporting requirements for total demand</span></span>
+<span><span class="va">demand_summary</span> <span class="op">&lt;-</span> <span class="fu">pull_data_summary</span><span class="op">(</span>category_selection <span class="op">=</span> <span class="st">"demand total"</span><span class="op">)</span></span></code></pre></div>
+<pre><code>demand_summary |&gt; glimpse()
+
+Rows: 10,150
+Columns: 9
+Groups: report_name, year, month, category [248]
+$ report_name &lt;chr&gt; "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP…
+$ year        &lt;dbl&gt; 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2020, 2020, 2020, 2020, 2…
+$ month       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ category    &lt;chr&gt; "demand total", "demand total", "demand total", "demand total", "demand total", "dema…
+$ use_type    &lt;chr&gt; "potable and raw water", "potable and raw water", "potable and raw water", "potable a…
+$ n           &lt;int&gt; 530, 530, 530, 530, 530, 530, 530, 530, 530, 530, 507, 507, 507, 507, 507, 507, 507, …
+$ use_group   &lt;chr&gt; "other", "other", "other", "other", "other", "recycled", "recycled", "recycled", "rec…
+$ statistic   &lt;chr&gt; "mean", "median", "q25", "q75", "sd", "mean", "median", "q25", "q75", "sd", "mean", "…
+$ volume_af   &lt;dbl&gt; 28877.4750, 8877.0000, 3384.6097, 21984.5000, 141415.9556, 2008.1464, 593.5650, 104.0…</code></pre>
+<p>Visualize these data for a specific category and pwsid,</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">urban_water_data</span> <span class="op">|&gt;</span> </span>
-<span>     <span class="fu"><a href="reference/plot_data.html">plot_data</a></span><span class="op">(</span>selected_category <span class="op">=</span> <span class="st">"supply"</span>,</span>
-<span>               pwsid <span class="op">=</span> <span class="st">""</span>, </span>
-<span>               show_subcategories <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="reference/plot_data.html">plot_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, category_selection <span class="op">=</span> <span class="st">"demand"</span>, </span>
+<span>          pwsid_selection <span class="op">=</span> <span class="st">"CA0710001"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="https://github.com/FlowWest/uwdtap/blob/v0.1/man/figures/demand_plot.png"></p>
 <p>Note: The package does not QA/QC data. It does preform basic mapping of fields so that data can be compared across reports.</p>
 </div>
 
