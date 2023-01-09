@@ -91,7 +91,25 @@ new_additions <- tibble(use_group = c("nonpotable", "surface water","imported/pu
 use_type_lookup <- use_type_lookup |>
   bind_rows(new_additions)
 
-usethis::use_data(pwsid_lookup, parameters, use_type_lookup, overwrite = T)
+# Currently takes a few minutes to create the ear summary so using
+# static version of ear summary for performance
+ear_parameters <- filter(parameters, report_name == "ear")
+ear_year_parameters <- tibble(year_selection = ear_parameters$year)
+
+get_ear_summary <- function(year_selection, ...) {
+  data <- get_ear_data(year_selection, ...) |>
+    group_by(report_name, year, month, category, use_type) |>
+    summarise(mean = mean(volume_af, na.rm = T),
+              median = median(volume_af, na.rm = T),
+              q25 = quantile(volume_af, probs = 0.25, na.rm = T),
+              q75 = quantile(volume_af, probs = 0.75, na.rm = T),
+              sd = sd(volume_af, na.rm = T),
+              n = length(unique(pwsid)))
+}
+
+ear_summary <- purrr::map_dfr(pmap(years_params, get_ear_summary), bind_rows)
+
+usethis::use_data(pwsid_lookup, parameters, use_type_lookup, ear_summary, overwrite = T)
 
 
 
