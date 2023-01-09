@@ -7,7 +7,7 @@
 # TODO add source
 }
 \usage{
-get_wla_data(year_selection)
+get_wla_data()
 }
 \arguments{
 \item{year_selection}{Year to filter data to.}

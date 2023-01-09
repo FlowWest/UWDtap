@@ -2,7 +2,7 @@
 title: "Mapping urban water data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{mapping-urban-water-data}
+  %\VignetteIndexEntry{Mapping urban water data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,42 +19,41 @@ library(uwdtap)
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
-# Mapping county-level urban water data
 
-The /code{"map_data"} function allows users to visualize differences in water data by county. Our hope is that by connecting publicly-accessible reports with mapping functionality, water data could be qualitatively connected with other geographically-linked environmental and social analyses. For example, geospatial data is used in analyses relating to [Social Determinants of Health](https://www.cdc.gov/places/social-determinants-of-health-and-places-data/index.html) and [water quality](https://www.epa.gov/waterdata/water-quality-data-download). Further, data gaps have been cited as a barrier in social and economic dimensions of water in California, suggesting that increasing accessibility to machine-readabale, transparent, and publicly available datasets, including those regarding water supply, could further such analyses (https://www.liebertpub.com/doi/full/10.1089/ees.2020.0315, Goddard, Ray, Balazs).
+The ```map_county_data``` function allows users to visualize water supply and demand by county, both by coloring counties according to their relative supply or demand values and by showing the number of urban water suppliers. By connecting the Public Water System ID (PWSID) values in the datasets to their principal counties, the ```map_county_data``` function creates a simple visualization that facilitates easy geographical comparison.
 
+For example, we can visualize total demand by county from all available reports in 2015.
 
-# Example of connecting county-level water data, water supply, and the California Communities Environmental Health Screening Tool:
-https://oehha.ca.gov/calenviroscreen/report/calenviroscreen-40
-
-```{r, echo = FALSE}
-# example of using county-level data
-enviro_screen_data_raw <- readxl::read_xlsx(here::here("data-raw", "example", "cal_enviroscreen_data.xlsx")) |> 
-  janitor::clean_names() |> 
-  mutate(california_county = tolower(california_county)) |> 
-  select(california_county, score = ces_4_0_score,
-         percentile = ces_4_0_percentile, 
-         percentile_range = ces_4_0_percentile_range) 
-
-data <- get_data()
-pwsid_data <- load(pwsid_lookup)
-
-enviro_screen <- left_join(data, pwsid_data, by = "pwsid") |> 
-  group_by(county) |>
-    summarise(total_county_af = sum(volume_af, na.rm = T),
-              no_urban_water_suppliers = n_distinct(supplier_name)) |>
-    distinct(county, total_county_af, no_urban_water_suppliers) |> 
-  left_join(enviro_screen_data_raw, by = "county") |> 
+```{r}
+# pull data and specify "demand_total" and years
+data <- pull_data(type = "demand total", year_selection = 2016) |> 
   glimpse()
-  
-  
-  
+
+# map data
+map_county_data(data)
 ```
 
-https://oehha.ca.gov/calenviroscreen/about-calenviroscreen
+Alternatively, the data can be pulled and mapped using the pipe function:
 
-https://regionalchange.ucdavis.edu/sites/g/files/dgvnsk986/files/inline-files/The%20Struggle%20for%20Water%20Justice%20APPENDICES.pdf
+```{r, eval = FALSE}
+pull_data(type = "supply total", year_selection = 2016) |> 
+  map_county_data()
+```
 
-https://www.buttecounty.net/waterresourceconservation/waterinventoryandanalysis
+## Further analyses
 
-https://pubs.rsc.org/en/content/chapter/bk9781849730198-00093/978-1-84973-019-8
+Connecting publicly accessible urban water data to geospatial mapping allows for simple visual comparisons. Where people live can dictate levels of water access, contamination, and even water affordability (Balazs & Ray, 2014, Landon et al. 2018). Data gaps can be a barrier to developing theory about such interactions (Goddard, Ray, & Balazs 2021) and our hope is that by presenting urban water data in a machine-readable and transparent format, future analyses might be made easier. 
+Some datasets that provide additional data at the county level:
+
+* [EPA Water Quality Portal](https://www.epa.gov/waterdata/water-quality-data-download)
+* [California Communities Environmental Health Screening Tool](https://oehha.ca.gov/calenviroscreen/report/calenviroscreen-40)
+* [CDC Social Determinants of Health](https://www.cdc.gov/places/social-determinants-of-health-and-places-data/index.html)
+
+### References
+
+Balazs, C. & Ray, I. (2014). The Drinking Water Disparities Framework: On The Origins and Persistence of Inequities in Exposure. American Journal of Public Health 104(4).
+
+Goddard, J., Ray, I., Balazs, C. (2021). Water affordability and human right to water implications in California. PLoS ONE 16(1).
+
+Landon, J., Fencl, A., Waterson, S., Jarin, J., Aranda, A., King, A., Pannu, C., Seaton, P., Firestone, L., Dawson, M., Nguyen, P. (2018). The Struggle for Water Justice in California’s San Joaquin Valley: A Focus on Disadvantaged Unincorporated Communities. Davis, CA: UC Davis Center for Regional Change.
+
