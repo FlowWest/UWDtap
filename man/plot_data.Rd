@@ -6,19 +6,19 @@
 \usage{
 plot_data(
   data,
-  selected_category = c("supply", "supply total", "demand", "demand total", "losses"),
-  pwsid,
+  category_selection = c("supply", "supply total", "demand", "demand total", "losses"),
+  pwsid_selection,
   show_subcategories = FALSE
 )
 }
 \arguments{
 \item{data}{Data to plot. Must be in the format outputted from \code{pull_data()} funciton}
 
-\item{selected_category}{The category that the user would like plotted.
+\item{category_selection}{The category that the user would like plotted.
 Coverage accross reporting requirements varies by category.
 Can be \code{"supply"}, \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}}
 
-\item{pwsid}{The Public Water Sysetm Identification Number (PWSID) corresponding
+\item{pwsid_selection}{The Public Water Sysetm Identification Number (PWSID) corresponding
 to the agency whose data you would like to visualize.}
 
 \item{show_subcategories}{Defaults to FALSE. If set to TRUE shows subcategoreis for use types.}
@@ -27,5 +27,5 @@ to the agency whose data you would like to visualize.}
 This function generates a simple visualization of Urban Water Data.
 }
 \examples{
-plot_data(selected_category = "demand", pwsid = "CA3610001")
+plot_data(category_selection = "demand", pwsid = "CA3610001")
 }

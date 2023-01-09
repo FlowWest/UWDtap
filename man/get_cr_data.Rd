@@ -4,10 +4,10 @@
 \alias{get_cr_data}
 \title{Get CR data}
 \source{
-# TODO add source
+\href{https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information}{Conservation Report (CR)}
 }
 \usage{
-get_cr_data(year_selection)
+get_cr_data()
 }
 \arguments{
 \item{year_selection}{Year to filter data to.}

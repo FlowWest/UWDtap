@@ -19,8 +19,9 @@ Depends:
     tidyverse,
     httr, 
     jsonlite,
-    vroom
+    vroom,
+    plotly
 RoxygenNote: 7.2.3
 Suggests: 
-    Plotly 
+ 
 

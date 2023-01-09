@@ -4,8 +4,9 @@
 #' @source
 #' WUE data portal https://wuedata.water.ca.gov/
 #' UWMP required every five years
-# 2020 data comes from this site https://data.cnra.ca.gov/dataset/2020-uwmp-data-export-tables
-# 2015 data comes from this site https://wuedata.water.ca.gov/uwmp_export.asp
+#' 2020 data comes from this site https://data.cnra.ca.gov/dataset/2020-uwmp-data-export-tables
+#' 2015 data comes from this site https://wuedata.water.ca.gov/uwmp_export.asp
+#' \href{https://wuedata.water.ca.gov/}{Urban Water Management Plan (UWMP)}
 #' @export
 get_uwmp_data <- function() {
   temp <- tempfile()
@@ -72,7 +73,7 @@ get_uwmp_data <- function() {
 #' @title Get wla data
 #' @description This function pulls wla data from wue portal. This is a helper function used by the \code{pull_data()} function
 #' @param year_selection Year to filter data to.
-#' @source # TODO add source
+#' @source \href{https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls}{Water Loss Audit (WLA)}
 #' @export
 
 get_wla_data <- function() {
@@ -158,7 +159,7 @@ get_wla_data <- function() {
 #' @title Get CR data
 #' @description This function pulls cr data from data.ca.gov. This is a helper function used by the \code{pull_data()} function
 #' @param year_selection Year to filter data to.
-#' @source # TODO add source
+#' @source \href{https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information}{Conservation Report (CR)}
 #' @export
 
 get_cr_data <- function() {
@@ -216,7 +217,7 @@ get_cr_data <- function() {
 #' @title Get ear data
 #' @description This function pulls ear data This is a helper function used by the \code{pull_data()} function
 #' @param year_selection Year to filter data to.
-#' @source # TODO add source
+#' @source \href{https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html}{Electronic Annual Report (EAR)}
 #' @export
 get_ear_data <- function(year_selection) {
   ear_parameters <- filter(parameters, report_name == "ear", year == year_selection)
@@ -363,19 +364,23 @@ get_ear_data <- function(year_selection) {
 
 #' @title Pull Data
 #' @description Pulls data from the CR, EAR, UWMP, and WLA and compiles it into a single format.
-#' @param type Describes type of data to pull. an be \code{"supply"},
+#' @param category_selection Describes type of data to pull. an be \code{"supply"},
 #' \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}, \code{other}
 #' @param year_selection Year to filter data to.
-#' @param report Specifies which report to pull data from. Can be one of \code{"EAR"}, \code{"UWMP"}
+#' @param report_selection Specifies which report to pull data from. Can be one of \code{"EAR"}, \code{"UWMP"}
 #' \code{"CR"}, or \code{"WLA"}
 #' @source
-#' TODO add
+#' Get Summary Data pulls data from the following reports:
+#' \href{https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information}{Conservation Report (CR)}
+#' \href{https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html}{Electronic Annual Report (EAR)}
+#' \href{https://wuedata.water.ca.gov/}{Urban Water Management Plan (UWMP)}
+#' \href{https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls}{Water Loss Audit (WLA)}
 #' @export
 
 pull_data <-
-  function(type = c("supply", "demand", "supply total", "demand total", "losses", "other"),
+  function(category_selection = c("supply", "demand", "supply total", "demand total", "losses", "other"),
            year_selection,
-           report = c("EAR", "UWMP", "CR", "WLA"),
+           report_selection = c("EAR", "UWMP", "CR", "WLA"),
            pwsid, ...) {
       cr <- get_cr_data() |>
         filter(year == year_selection)
@@ -386,11 +391,11 @@ pull_data <-
       ear <- get_ear_data(year_selection, ...)
       data <- bind_rows(uwmp, wla, cr, ear)
     if (missing(pwsid)) {
-      all_data <- filter(data, report_name %in% report, category %in% type)
+      all_data <- filter(data, report_name %in% report_selection, category %in% category_selection)
     } else{
       all_data <- filter(data,
-             report_name %in% report,
-             category %in% type,
+             report_name %in% report_selection,
+             category %in% category_selection,
              pwsid %in% pwsid)
     }
       all_data_formatted <- all_data |>
@@ -398,12 +403,27 @@ pull_data <-
       return(all_data_formatted)
   }
 
-get_summary <- function(type = c("supply", "demand", "supply total", "demand total", "losses", "other"),
-                        report = c("EAR", "UWMP", "CR", "WLA")) {
+#' @title Get Data Summary
+#' @description Summarizes data from the CR, EAR, UWMP, and WLA into summary table.
+#' @param category_selection Describes type of data to pull. an be \code{"supply"},
+#' \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}, \code{other}
+#' @param report_selection Specifies which report to pull data from. Can be one of \code{"EAR"}, \code{"UWMP"}
+#' \code{"CR"}, or \code{"WLA"}
+#' @source
+#' Get Summary Data pulls data from the following reports:
+#' \href{https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information}{Conservation Report (CR)}
+#' \href{https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html}{Electronic Annual Report (EAR)}
+#' \href{https://wuedata.water.ca.gov/}{Urban Water Management Plan (UWMP)}
+#' \href{https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls}{Water Loss Audit (WLA)}
+#' @export
+get_data_summary <- function(category_selection= c("supply", "demand", "supply total", "demand total", "losses", "other"),
+                        report_selection = c("EAR", "UWMP", "CR", "WLA")) {
   wla <- get_wla_data()
   cr <- get_cr_data()
   uwmp <- get_uwmp_data()
   data <- bind_rows(wla, cr, uwmp) |>
+    filter(report_name %in% report_selection,
+           category %in% category_selection) |>
     group_by(report_name, year, month, category, use_type) |>
     summarise(mean = mean(volume_af, na.rm = T),
               median = median(volume_af, na.rm = T),
