@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(uwdtap)
+library(UWDtap)
 
-test_check("uwdtap")
+test_check("UWDtap")

@@ -8,7 +8,10 @@
 #' to the agency whose data you would like to visualize.
 #' @param show_subcategories Defaults to FALSE. If set to TRUE shows subcategoreis for use types.
 #' @examples
-#' plot_data(category_selection = "demand", pwsid = "CA3610001")
+#' \dontrun{
+#' pull_data(2020) |>
+#'     plot_data(category_selection = "demand", pwsid = "CA3610001")
+#' }
 #' @export
 plot_data <- function(data,
                       category_selection = c("supply", "supply total", "demand",
