@@ -29,7 +29,7 @@ reference:
   desc: Helper data for use within data pull functions and analysis
   contents:
   - pwsid_lookup
-  - parameters
+  - data_source
   - use_type_lookup
 
 - title: Helper Functions

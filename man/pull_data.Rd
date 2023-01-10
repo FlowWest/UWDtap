@@ -21,7 +21,7 @@ pull_data(
 )
 }
 \arguments{
-\item{category_selection}{Describes type of data to pull. an be \code{"supply"},
+\item{category_selection}{Describes type of data to pull. Can be \code{"supply"},
 \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}, \code{other}}
 
 \item{year_selection}{One year to filter data to (ex \code{2016}).}

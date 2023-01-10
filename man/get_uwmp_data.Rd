@@ -13,9 +13,6 @@ UWMP required every five years
 \usage{
 get_uwmp_data()
 }
-\arguments{
-\item{year_selection}{Year to filter data to. UWMP data is avaliable for 2015 and 2020.}
-}
 \description{
 This function pulls uwmp data from wue portal. This is a helper function used by the \code{pull_data()} function
 }

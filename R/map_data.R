@@ -5,12 +5,14 @@ library(RColorBrewer)
 library(leaflet)
 
 #' @title Map Urban Water Data
-#' @description This function generates a county-level map of Urban Water Data.
+#' @description This function generates a map of total demand or supply by county.
 #' @param data Data to plot. Must be in the format outputted from \code{pull_data()} function and to avoid
 #' summing duplicate rows of data in a county, please only use data with \code{category} "demand_total"
 #' or "supply_total".
 #' @examples
+#' \dontrun{
 #' map_county_data(data)
+#' }
 #' @export
 map_county_data <- function(data) {
 

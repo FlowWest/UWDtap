@@ -4,7 +4,7 @@
 \alias{pull_data_summary}
 \title{Pull Data Summary}
 \source{
-Pull Summary Data pulls data from the following reports:
+Pull summary data pulls data from the following reports:
 \href{https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information}{Conservation Report (CR)},
 \href{https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html}{Electronic Annual Report (EAR)},
 \href{https://wuedata.water.ca.gov/}{Urban Water Management Plan (UWMP)},
@@ -18,7 +18,7 @@ pull_data_summary(
 )
 }
 \arguments{
-\item{category_selection}{Describes type of data to pull. an be \code{"supply"},
+\item{category_selection}{Describes type of data to pull. Can be \code{"supply"},
 \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}, \code{other}}
 
 \item{report_selection}{Specifies which report to pull data from. Can be one of \code{"EAR"}, \code{"UWMP"}

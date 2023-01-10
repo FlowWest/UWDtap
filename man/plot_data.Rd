@@ -12,16 +12,16 @@ plot_data(
 )
 }
 \arguments{
-\item{data}{Data to plot. Must be in the format outputted from \code{pull_data()} funciton}
+\item{data}{Data to plot. Must be in the format outputted from \code{pull_data()} function}
 
 \item{category_selection}{The category that the user would like plotted.
-Coverage accross reporting requirements varies by category.
+Coverage across reporting requirements varies by category.
 Can be \code{"supply"}, \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}}
 
-\item{pwsid_selection}{The Public Water Sysetm Identification Number (PWSID) corresponding
+\item{pwsid_selection}{The Public Water System Identification Number (PWSID) corresponding
 to the agency whose data you would like to visualize.}
 
-\item{show_subcategories}{Defaults to FALSE. If set to TRUE shows subcategoreis for use types.}
+\item{show_subcategories}{Defaults to FALSE. If set to TRUE shows subcategories for use types.}
 }
 \description{
 This function generates a simple visualization of Urban Water Data.

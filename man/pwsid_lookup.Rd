@@ -8,8 +8,7 @@
 A table with 2 columns (\code{water_system_name} & \code{pwsid}) and 7,898 rows
 }
 \source{
-(CA open data portal)[https://data.ca.gov/dataset/drinking-water-public-water-system-information/resource/9dca2f92-4630-4bee-a9f9-69d2085b57e3]
-plot_data(selected_category = "demand", pwsid = "CA3610001")
+\href{https://data.ca.gov/dataset/drinking-water-public-water-system-information/resource/9dca2f92-4630-4bee-a9f9-69d2085b57e3}{CA open data portal}
 }
 \usage{
 pwsid_lookup

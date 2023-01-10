@@ -1,6 +1,5 @@
 #' @title Get uwmp data
 #' @description This function pulls uwmp data from wue portal. This is a helper function used by the \code{pull_data()} function
-#' @param year_selection Year to filter data to. UWMP data is avaliable for 2015 and 2020.
 #' @source
 #' WUE data portal https://wuedata.water.ca.gov/
 #' UWMP required every five years
@@ -9,12 +8,13 @@
 #' \href{https://wuedata.water.ca.gov/}{Urban Water Management Plan (UWMP)}
 #' @export
 get_uwmp_data <- function() {
+  suppressMessages({
   temp <- tempfile()
   download.file("https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_2_1_r_conv_to_af.xls", temp)
-  pwsid <- read.table(temp, header = TRUE, sep = "\t", fill = TRUE) |> select(ORG_ID, PUBLIC_WATER_SYSTEM_NUMBER) |> glimpse()
+  pwsid <- read.table(temp, header = TRUE, sep = "\t", fill = TRUE) |> select(ORG_ID, PUBLIC_WATER_SYSTEM_NUMBER)
   unlink(temp)
 
-  wue_datasets <- parameters |>
+  wue_datasets <- data_source |>
     filter(report_name == "UWMP") |>
     select(year, url, file_name)
 
@@ -68,11 +68,11 @@ get_uwmp_data <- function() {
 
   uwmp_data <- purrr::pmap(wue_datasets, read_table) |> reduce(bind_rows)
   return(uwmp_data)
+  })
 }
 
 #' @title Get wla data
 #' @description This function pulls wla data from wue portal. This is a helper function used by the \code{pull_data()} function
-#' @param year_selection Year to filter data to.
 #' @source \href{https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls}{Water Loss Audit (WLA)}
 #' @export
 
@@ -158,7 +158,6 @@ get_wla_data <- function() {
 
 #' @title Get CR data
 #' @description This function pulls cr data from data.ca.gov. This is a helper function used by the \code{pull_data()} function
-#' @param year_selection Year to filter data to.
 #' @source \href{https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information}{Conservation Report (CR)}
 #' @export
 
@@ -220,7 +219,7 @@ get_cr_data <- function() {
 #' @source \href{https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html}{Electronic Annual Report (EAR)}
 #' @export
 get_ear_data <- function(year_selection) {
-  ear_parameters <- filter(parameters, report_name == "ear", year == year_selection)
+  ear_parameters <- filter(data_source, report_name == "ear", year == year_selection)
   url = ear_parameters$url
   file_name = ear_parameters$file_name
   temp <- tempfile()
@@ -364,7 +363,7 @@ get_ear_data <- function(year_selection) {
 
 #' @title Pull Data
 #' @description Pull one year of data from the CR, EAR, UWMP, and WLA and compiles it into a single format.
-#' @param category_selection Describes type of data to pull. an be \code{"supply"},
+#' @param category_selection Describes type of data to pull. Can be \code{"supply"},
 #' \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}, \code{other}
 #' @param year_selection One year to filter data to (ex \code{2016}).
 #' @param report_selection Specifies which report to pull data from. Can be one of \code{"EAR"}, \code{"UWMP"}
@@ -384,6 +383,7 @@ pull_data <-
            year_selection,
            report_selection = c("EAR", "UWMP", "CR", "WLA"),
            pwsid, ...) {
+    suppressMessages({
       cr <- get_cr_data() |>
         filter(year == year_selection)
       wla <- get_wla_data() |>
@@ -404,16 +404,17 @@ pull_data <-
         left_join(use_type_lookup) |>
         select(-use_type)
       return(all_data_formatted)
+    })
   }
 
 #' @title Pull Data Summary
 #' @description Summarizes data from the CR, EAR, UWMP, and WLA into summary table.
-#' @param category_selection Describes type of data to pull. an be \code{"supply"},
+#' @param category_selection Describes type of data to pull. Can be \code{"supply"},
 #' \code{"supply total"}, \code{"demand"}, \code{"demand total"}, \code{"losses"}, \code{other}
 #' @param report_selection Specifies which report to pull data from. Can be one of \code{"EAR"}, \code{"UWMP"}
 #' \code{"CR"}, or \code{"WLA"}
 #' @source
-#' Pull Summary Data pulls data from the following reports:
+#' Pull summary data pulls data from the following reports:
 #' \href{https://data.ca.gov/dataset/drinking-water-public-water-system-operations-monthly-water-production-and-conservation-information}{Conservation Report (CR)},
 #' \href{https://www.waterboards.ca.gov/drinking_water/certlic/drinkingwater/eardata.html}{Electronic Annual Report (EAR)},
 #' \href{https://wuedata.water.ca.gov/}{Urban Water Management Plan (UWMP)},
@@ -421,6 +422,7 @@ pull_data <-
 #' @export
 pull_data_summary <- function(category_selection= c("supply", "demand", "supply total", "demand total", "losses", "other"),
                         report_selection = c("EAR", "UWMP", "CR", "WLA")) {
+  suppressMessages({
   wla <- get_wla_data()
   cr <- get_cr_data()
   uwmp <- get_uwmp_data()
@@ -439,5 +441,6 @@ pull_data_summary <- function(category_selection= c("supply", "demand", "supply 
     pivot_longer(cols = c(mean, median, q25, q75, sd),
                  names_to = "statistic",
                  values_to = "volume_af" )
+  })
 
 }

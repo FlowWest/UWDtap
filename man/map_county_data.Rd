@@ -12,8 +12,10 @@ summing duplicate rows of data in a county, please only use data with \code{cate
 or "supply_total".}
 }
 \description{
-This function generates a county-level map of Urban Water Data.
+This function generates a map of total demand or supply by county.
 }
 \examples{
+\dontrun{
 map_county_data(data)
+}
 }

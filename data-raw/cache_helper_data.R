@@ -56,7 +56,7 @@ cr_parameters <- tibble(report_name = "CR",
                         file_name = NA,
                         year = NA)
 
-parameters <- bind_rows(ear_parameters, uwmp_paramters, wla_parameters, cr_parameters)
+data_source <- bind_rows(ear_parameters, uwmp_paramters, wla_parameters, cr_parameters)
 
 demand_lookup <- read_rds("data-raw/use_type_lookup.rds")
 supply_lookup <- read_rds("data-raw/supply_type_lookup.rds")
@@ -108,9 +108,9 @@ get_ear_summary <- function(year_selection, ...) {
               n = length(unique(pwsid)))
 }
 
-ear_summary <- purrr::map_dfr(pmap(years_params, get_ear_summary), bind_rows)
+ear_summary <- purrr::map_dfr(pmap(ear_year_parameters, get_ear_summary), bind_rows)
 
-usethis::use_data(pwsid_lookup, parameters, use_type_lookup, ear_summary, overwrite = T)
+usethis::use_data(pwsid_lookup, data_source, use_type_lookup, ear_summary, overwrite = T)
 
 
 

@@ -9,9 +9,6 @@
 \usage{
 get_wla_data()
 }
-\arguments{
-\item{year_selection}{Year to filter data to.}
-}
 \description{
 This function pulls wla data from wue portal. This is a helper function used by the \code{pull_data()} function
 }

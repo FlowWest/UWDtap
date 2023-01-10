@@ -9,9 +9,6 @@
 \usage{
 get_cr_data()
 }
-\arguments{
-\item{year_selection}{Year to filter data to.}
-}
 \description{
 This function pulls cr data from data.ca.gov. This is a helper function used by the \code{pull_data()} function
 }
