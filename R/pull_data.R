@@ -10,7 +10,7 @@
 get_uwmp_data <- function() {
   suppressMessages({
   temp <- tempfile()
-  download.file("https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_2_1_r_conv_to_af.xls", temp)
+  download.file("https://wuedata.water.ca.gov/public/uwmp_data_export/uwmp_table_2_1_r_conv_to_af.xls", temp, quiet = TRUE)
   pwsid <- read.table(temp, header = TRUE, sep = "\t", fill = TRUE) |> select(ORG_ID, PUBLIC_WATER_SYSTEM_NUMBER)
   unlink(temp)
 
@@ -21,7 +21,7 @@ get_uwmp_data <- function() {
   read_table <- function(year, url, file_name){
     print(file_name)
     temp <- tempfile()
-    download.file(url, temp)
+    download.file(url, temp, quiet = TRUE)
     data <- read.table(temp, header = TRUE, sep = "\t", fill = TRUE)
     unlink(temp)
 
@@ -80,7 +80,8 @@ get_wla_data <- function() {
   # download file
   temp <- tempfile()
   download.file("https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls",
-                destfile = temp)
+                destfile = temp,
+                quiet = TRUE)
   wla_data_raw <- read_delim(temp)
   unlink(temp)
 
@@ -223,7 +224,7 @@ get_ear_data <- function(year_selection) {
   url = ear_parameters$url
   file_name = ear_parameters$file_name
   temp <- tempfile()
-  download.file(url, temp)
+  download.file(url, temp, quiet = TRUE)
   data <- vroom::vroom(unz(temp, file_name), delim = "\t")
   unlink(temp)
   if(year_selection < 2020) {
@@ -440,7 +441,9 @@ pull_data_summary <- function(category_selection= c("supply", "demand", "supply 
     left_join(use_type_lookup) |>
     pivot_longer(cols = c(mean, median, q25, q75, sd),
                  names_to = "statistic",
-                 values_to = "volume_af" )
+                 values_to = "volume_af") |>
+    filter(!is.na(use_group)) |>
+    select(-use_type)
   })
 
 }
