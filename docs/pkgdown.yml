@@ -3,7 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   mapping-urban-water-data: mapping-urban-water-data.html
-last_built: 2023-01-10T01:55Z
+last_built: 2023-01-10T06:11Z
 urls:
   reference: https://flowwest.github.io/uwdap/reference
   article: https://flowwest.github.io/uwdap/articles

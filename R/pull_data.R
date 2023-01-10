@@ -112,12 +112,12 @@ get_wla_data <- function() {
 
   # select supply use cases and supplier name, reporting year, and volume
   wla_supply <- wla_data_raw |>
-    select(WATER_SUPPLIER_NAME, REPORTING_YEAR, VOLUME_REPORTING_UNITS, PWS_ID_OR_OTHER_ID, all_of(supply_fields)) |>
+    select(WATER_SUPPLIER_NAME, WUEDATA_PLAN_REPORT_YEAR, VOLUME_REPORTING_UNITS, PWS_ID_OR_OTHER_ID, all_of(supply_fields)) |>
     pivot_longer(cols = all_of(supply_fields), names_to = "use_type", values_to = "volume") |>
     transmute(report_name = "WLA",
               pwsid = PWS_ID_OR_OTHER_ID,
               supplier_name = WATER_SUPPLIER_NAME,
-              year = REPORTING_YEAR,
+              year = WUEDATA_PLAN_REPORT_YEAR,
               month = NA,
               category = ifelse(use_type == "WS_WATER_SUPPLIED_VOL_AF", "supply total", "supply"),
               use_type = tolower(use_type),
@@ -125,13 +125,13 @@ get_wla_data <- function() {
 
   # select demand use cases and supplier name, reporting year, and volume
   wla_demand <- wla_data_raw |>
-    select(WATER_SUPPLIER_NAME, REPORTING_YEAR, VOLUME_REPORTING_UNITS, PWS_ID_OR_OTHER_ID, all_of(demand_fields),
+    select(WATER_SUPPLIER_NAME, WUEDATA_PLAN_REPORT_YEAR, VOLUME_REPORTING_UNITS, PWS_ID_OR_OTHER_ID, all_of(demand_fields),
            WL_WATER_LOSSES_VOL_AF) |>
     pivot_longer(cols = c(all_of(demand_fields), WL_WATER_LOSSES_VOL_AF), names_to = "use_type", values_to = "volume") |>
     transmute(report_name = "WLA",
               pwsid = PWS_ID_OR_OTHER_ID,
               supplier_name = WATER_SUPPLIER_NAME,
-              year = REPORTING_YEAR,
+              year = WUEDATA_PLAN_REPORT_YEAR,
               month = NA,
               category = ifelse(use_type == "AC_AUTH_CONSUMPTION_VOL_AF", "demand total", "demand"),
               use_type = tolower(use_type),
@@ -139,12 +139,12 @@ get_wla_data <- function() {
 
   # select other use cases and supplier name, reporting year, and volume
   wla_losses <- wla_data_raw |>
-    select(WATER_SUPPLIER_NAME, REPORTING_YEAR, VOLUME_REPORTING_UNITS, PWS_ID_OR_OTHER_ID, all_of(other_fields)) |>
+    select(WATER_SUPPLIER_NAME, WUEDATA_PLAN_REPORT_YEAR, VOLUME_REPORTING_UNITS, PWS_ID_OR_OTHER_ID, all_of(other_fields)) |>
     pivot_longer(cols = all_of(other_fields), names_to = "use_type", values_to = "volume") |>
     transmute(report_name = "WLA",
               pwsid = PWS_ID_OR_OTHER_ID,
               supplier_name = WATER_SUPPLIER_NAME,
-              year = REPORTING_YEAR,
+              year = WUEDATA_PLAN_REPORT_YEAR,
               month = NA,
               category = "losses",
               use_type = tolower(use_type),
@@ -380,31 +380,47 @@ get_ear_data <- function(year_selection) {
 #' @export
 
 pull_data <-
-  function(category_selection = c("supply", "demand", "supply total", "demand total", "losses", "other"),
+  function(category_selection = c("supply",
+                                  "demand",
+                                  "supply total",
+                                  "demand total",
+                                  "losses",
+                                  "other"),
            year_selection,
            report_selection = c("EAR", "UWMP", "CR", "WLA"),
-           pwsid, ...) {
-    suppressMessages({
-      cr <- get_cr_data() |>
-        filter(year == year_selection)
-      wla <- get_wla_data() |>
-        filter(year == year_selection)
-      uwmp <- get_uwmp_data() |>
-        filter(year == year_selection)
-      ear <- get_ear_data(year_selection, ...)
-      data <- bind_rows(uwmp, wla, cr, ear)
-    if (missing(pwsid)) {
-      all_data <- filter(data, report_name %in% report_selection, category %in% category_selection)
-    } else{
-      all_data <- filter(data,
-             report_name %in% report_selection,
-             category %in% category_selection,
-             pwsid %in% pwsid)
+           pwsid,
+           ...) {
+    if (length(year_selection) > 1) {
+      stop("Please select one year. Use pull_data_summary to summarize more than one year.")
     }
-      all_data_formatted <- all_data |>
-        left_join(use_type_lookup) |>
-        select(-use_type)
-      return(all_data_formatted)
+    suppressWarnings({
+      suppressMessages({
+        cr <- get_cr_data() |>
+          filter(year == year_selection)
+        wla <- get_wla_data() |>
+          filter(year == year_selection)
+        uwmp <- get_uwmp_data() |>
+          filter(year == year_selection)
+        ear <- get_ear_data(year_selection, ...)
+        data <- bind_rows(uwmp, wla, cr, ear)
+        if (missing(pwsid)) {
+          all_data <-
+            filter(data,
+                   report_name %in% report_selection,
+                   category %in% category_selection)
+        } else{
+          all_data <- filter(
+            data,
+            report_name %in% report_selection,
+            category %in% category_selection,
+            pwsid %in% pwsid
+          )
+        }
+        all_data_formatted <- all_data |>
+          left_join(use_type_lookup) |>
+          select(-use_type)
+        return(all_data_formatted)
+      })
     })
   }
 
@@ -421,29 +437,41 @@ pull_data <-
 #' \href{https://wuedata.water.ca.gov/}{Urban Water Management Plan (UWMP)},
 #' \href{https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls}{Water Loss Audit (WLA)}
 #' @export
-pull_data_summary <- function(category_selection= c("supply", "demand", "supply total", "demand total", "losses", "other"),
-                        report_selection = c("EAR", "UWMP", "CR", "WLA")) {
-  suppressMessages({
-  wla <- get_wla_data()
-  cr <- get_cr_data()
-  uwmp <- get_uwmp_data()
-  data <- bind_rows(wla, cr, uwmp) |>
-    filter(report_name %in% report_selection,
-           category %in% category_selection) |>
-    group_by(report_name, year, month, category, use_type) |>
-    summarise(mean = mean(volume_af, na.rm = T),
-              median = median(volume_af, na.rm = T),
-              q25 = quantile(volume_af, probs = 0.25, na.rm = T),
-              q75 = quantile(volume_af, probs = 0.75, na.rm = T),
-              sd = sd(volume_af, na.rm = T),
-              n = length(unique(pwsid))) |>
-    bind_rows(ear_summary) |>
-    left_join(use_type_lookup) |>
-    pivot_longer(cols = c(mean, median, q25, q75, sd),
-                 names_to = "statistic",
-                 values_to = "volume_af") |>
-    filter(!is.na(use_group)) |>
-    select(-use_type)
-  })
+pull_data_summary <-
+  function(category_selection = c("supply",
+                                  "demand",
+                                  "supply total",
+                                  "demand total",
+                                  "losses",
+                                  "other"),
+           report_selection = c("EAR", "UWMP", "CR", "WLA")) {
+    suppressWarnings({
+      suppressMessages({
+        wla <- get_wla_data()
+        cr <- get_cr_data()
+        uwmp <- get_uwmp_data()
+        data <- bind_rows(wla, cr, uwmp) |>
+          filter(report_name %in% report_selection,
+                 category %in% category_selection) |>
+          group_by(report_name, year, month, category, use_type) |>
+          summarise(
+            mean = mean(volume_af, na.rm = T),
+            median = median(volume_af, na.rm = T),
+            q25 = quantile(volume_af, probs = 0.25, na.rm = T),
+            q75 = quantile(volume_af, probs = 0.75, na.rm = T),
+            sd = sd(volume_af, na.rm = T),
+            n = length(unique(pwsid))
+          ) |>
+          bind_rows(ear_summary) |>
+          left_join(use_type_lookup) |>
+          pivot_longer(
+            cols = c(mean, median, q25, q75, sd),
+            names_to = "statistic",
+            values_to = "volume_af"
+          ) |>
+          filter(!is.na(use_group)) |>
+          select(-use_type)
+      })
+    })
 
-}
+  }
