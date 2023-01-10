@@ -5,12 +5,12 @@
 \alias{parameters}
 \title{Parameters}
 \format{
-A tibble with 4 columns (`year`, `url`, `file_name`, `report_name`) and 23 rows
+A tibble with 4 columns (\code{year}, \code{url}, \code{file_name}, \code{report_name}) and 23 rows
 }
 \usage{
 parameters
 }
 \description{
-This table provides links to all the sources that contain UWD.
+This table provides links to all the web pages used to download urban water data.
 }
 \keyword{datasets}

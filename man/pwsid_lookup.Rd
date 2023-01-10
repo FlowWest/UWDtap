@@ -5,7 +5,7 @@
 \alias{pwsid_lookup}
 \title{PWSID Lookup Table}
 \format{
-A table with 2 columns (`water_system_name` & `pwsid`) and 7,898 rows
+A table with 2 columns (\code{water_system_name} & \code{pwsid}) and 7,898 rows
 }
 \source{
 (CA open data portal)[https://data.ca.gov/dataset/drinking-water-public-water-system-information/resource/9dca2f92-4630-4bee-a9f9-69d2085b57e3]

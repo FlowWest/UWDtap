@@ -27,5 +27,8 @@ to the agency whose data you would like to visualize.}
 This function generates a simple visualization of Urban Water Data.
 }
 \examples{
-plot_data(category_selection = "demand", pwsid = "CA3610001")
+\dontrun{
+pull_data(2020) |>
+    plot_data(category_selection = "demand", pwsid = "CA3610001")
+}
 }

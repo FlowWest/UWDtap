@@ -111,43 +111,19 @@
 <code class="sourceCode R"><span><span class="co"># download data from all reporting requirements for 2020</span></span>
 <span><span class="va">urban_water_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pull_data.html">pull_data</a></span><span class="op">(</span>year_selection <span class="op">=</span> <span class="fl">2020</span><span class="op">)</span></span></code></pre></div>
 <p>The data returned,</p>
-<pre><code>urban_water_data |&gt; glimpse()
-
-Rows: 1,120,132
-Columns: 9
-$ report_name   &lt;chr&gt; "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", …
-$ pwsid         &lt;chr&gt; "CA3610001", "CA3610001", "CA3610001", "CA3610001", "CA3610001", "CA3610001", "CA3610001", "CA0110001", …
-$ supplier_name &lt;chr&gt; "Adelanto  City Of", "Adelanto  City Of", "Adelanto  City Of", "Adelanto  City Of", "Adelanto  City Of",…
-$ year          &lt;dbl&gt; 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 20…
-$ month         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ category      &lt;chr&gt; "demand", "demand", "demand", "demand", "demand", "demand", "demand", "demand", "demand", "demand", "dem…
-$ use_type      &lt;chr&gt; "multi-family", "commercial", "industrial", "landscape", "other potable", "losses", "single family", "in…
-$ volume_af     &lt;dbl&gt; 162, 809, 0, 82, 1, 987, 2606, 2410, 4245, 1064, 5463, 83, 4483, 1569, 0, 7190, 463, 18762, 7813, 2994, …
-$ use_group     &lt;chr&gt; "residential", "commerical industrial institutional", "commerical industrial institutional", "landscape"…</code></pre>
+<p><img src="reference/figures/pull_data_table.png"></p>
 <p>Summarize these data across all years for a specific category and report,</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># summarize data from all reporting requirements for total demand</span></span>
-<span><span class="va">demand_summary</span> <span class="op">&lt;-</span> <span class="fu">pull_data_summary</span><span class="op">(</span>category_selection <span class="op">=</span> <span class="st">"demand total"</span><span class="op">)</span></span></code></pre></div>
-<pre><code>demand_summary |&gt; glimpse()
-
-Rows: 10,150
-Columns: 9
-Groups: report_name, year, month, category [248]
-$ report_name &lt;chr&gt; "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP", "UWMP…
-$ year        &lt;dbl&gt; 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2020, 2020, 2020, 2020, 2…
-$ month       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-$ category    &lt;chr&gt; "demand total", "demand total", "demand total", "demand total", "demand total", "dema…
-$ use_type    &lt;chr&gt; "potable and raw water", "potable and raw water", "potable and raw water", "potable a…
-$ n           &lt;int&gt; 530, 530, 530, 530, 530, 530, 530, 530, 530, 530, 507, 507, 507, 507, 507, 507, 507, …
-$ use_group   &lt;chr&gt; "other", "other", "other", "other", "other", "recycled", "recycled", "recycled", "rec…
-$ statistic   &lt;chr&gt; "mean", "median", "q25", "q75", "sd", "mean", "median", "q25", "q75", "sd", "mean", "…
-$ volume_af   &lt;dbl&gt; 28877.4750, 8877.0000, 3384.6097, 21984.5000, 141415.9556, 2008.1464, 593.5650, 104.0…</code></pre>
+<span><span class="va">demand_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pull_data_summary.html">pull_data_summary</a></span><span class="op">(</span>category_selection <span class="op">=</span> <span class="st">"demand total"</span><span class="op">)</span></span></code></pre></div>
+<p>The data returned,</p>
+<p><img src="reference/figures/pull_data_summary_table.png"></p>
 <p>Visualize these data for a specific category and pwsid,</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">urban_water_data</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="reference/plot_data.html">plot_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, category_selection <span class="op">=</span> <span class="st">"demand"</span>, </span>
 <span>          pwsid_selection <span class="op">=</span> <span class="st">"CA0710001"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="https://github.com/FlowWest/UWDtap/blob/main/man/figures/demand_plot.png"></p>
+<p><img src="reference/figures/demand_plot.png"></p>
 <p>Note: The package does not QA/QC data. It does preform basic mapping of fields so that data can be compared across reports.</p>
 </div>
 
@@ -202,7 +178,7 @@ $ volume_af   &lt;dbl&gt; 28877.4750, 8877.0000, 3384.6097, 21984.5000, 141415.9
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

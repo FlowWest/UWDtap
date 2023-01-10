@@ -22,7 +22,7 @@ reference:
   contents:
   - pull_data
   - plot_data
-  - get_data_summary
+  - pull_data_summary
   - map_county_data
 
 - title: Helper Data

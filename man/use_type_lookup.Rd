@@ -5,12 +5,12 @@
 \alias{use_type_lookup}
 \title{Use Type Lookup}
 \format{
-A tibble with 4 columns (`use_group`, `report_name`, `use_type`, `category`) and 141 rows
+A tibble with 4 columns (\code{use_group}, \code{report_name}, \code{use_type}, \code{category}) and 141 rows
 }
 \usage{
 use_type_lookup
 }
 \description{
-This lookup table helps map use types bewtween reports
+This lookup table helps map use types between reports
 }
 \keyword{datasets}

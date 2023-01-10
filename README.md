@@ -29,18 +29,9 @@ urban_water_data <- pull_data(year_selection = 2020)
 
 The data returned,
 
-```
-knitr::kable(head(urban_water_data))
 
-|report_name |pwsid     |supplier_name     | year| month|category | volume_af|use_group                           |
-|:-----------|:---------|:-----------------|----:|-----:|:--------|---------:|:-----------------------------------|
-|UWMP        |CA3610001 |Adelanto  City Of | 2020|    NA|demand   |       162|residential                         |
-|UWMP        |CA3610001 |Adelanto  City Of | 2020|    NA|demand   |       809|commerical industrial institutional |
-|UWMP        |CA3610001 |Adelanto  City Of | 2020|    NA|demand   |         0|commerical industrial institutional |
-|UWMP        |CA3610001 |Adelanto  City Of | 2020|    NA|demand   |        82|landscape                           |
-|UWMP        |CA3610001 |Adelanto  City Of | 2020|    NA|demand   |         1|other                               |
-|UWMP        |CA3610001 |Adelanto  City Of | 2020|    NA|demand   |       987|losses                              |
-```
+![](man/figures/pull_data_table.png)
+
 
 Summarize these data across all years for a specific category and report,
 
@@ -49,19 +40,9 @@ Summarize these data across all years for a specific category and report,
 demand_summary <- pull_data_summary(category_selection = "demand total")
 ```
 
-```
-knitr::kable(head(demand_summary))
+The data returned,
 
-|report_name | year| month|category     |use_type              |   n|use_group |statistic |  volume_af|
-|:-----------|----:|-----:|:------------|:---------------------|---:|:---------|:---------|----------:|
-|UWMP        | 2015|    NA|demand total |potable and raw water | 530|other     |mean      |  28877.475|
-|UWMP        | 2015|    NA|demand total |potable and raw water | 530|other     |median    |   8877.000|
-|UWMP        | 2015|    NA|demand total |potable and raw water | 530|other     |q25       |   3384.610|
-|UWMP        | 2015|    NA|demand total |potable and raw water | 530|other     |q75       |  21984.500|
-|UWMP        | 2015|    NA|demand total |potable and raw water | 530|other     |sd        | 141415.956|
-|UWMP        | 2015|    NA|demand total |recycled water demand | 530|recycled  |mean      |   2008.146|
-```
-
+![](man/figures/pull_data_summary_table.png)
 
 Visualize these data for a specific category and pwsid,
 
@@ -71,7 +52,7 @@ urban_water_data |>
           pwsid_selection = "CA0710001")
 ```
 
-![](https://github.com/FlowWest/UWDtap/blob/main/man/figures/demand_plot.png)
+![](man/figures/demand_plot.png)
 
 Note: The package does not QA/QC data. It does preform basic mapping of fields so that data can be compared across reports.
 
