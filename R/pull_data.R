@@ -418,6 +418,9 @@ pull_data <-
         }
         all_data_formatted <- all_data |>
           left_join(use_type_lookup) |>
+          mutate(category = case_when(use_group == "total volume" & category == "demand" ~ "demand total",
+                                      use_group == "total volume" & category == "supply" ~ "supply total",
+                                      T ~ category)) |>
           select(-use_type)
         return(all_data_formatted)
       })
