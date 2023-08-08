@@ -230,14 +230,14 @@ get_cr_data <- function() {
     mutate(volume_af = ifelse(is.nan(volume_af), NA, volume_af))
 
   residential_cr <- conservation_report_data |>
-    filter(category == "demand") |>
+    filter(use_type == "reported final total potable water production") |>
     group_by(report_name, pwsid, supplier_name,
-             year, month, category) |>
-    summarize(total_demand = sum(volume_af, na.rm = TRUE),
-              final_prop_residential = as.numeric(final_percent_residential_use)/100,
-              residential = total_demand * final_prop_residential) |>
+             year, month) |>
+    summarize(final_prop_residential = as.numeric(final_percent_residential_use)/100,
+              residential = volume_af * final_prop_residential) |>
     mutate(volume_af = ifelse(is.nan(residential), NA, residential),
-           use_type = "final residential use") |>
+           use_type = "final residential use",
+           category = "demand") |>
     select(report_name, pwsid, supplier_name, year, month, category, use_type, volume_af)
 
   final_conservation_report_data <- conservation_report_data |>
