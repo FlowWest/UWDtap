@@ -181,35 +181,70 @@ get_cr_data <- function() {
                  "reported_final_commercial_industrial_and_institutional_water",
                  "reported_recycled_water",
                  "final_percent_residential_use")
-  conservation_report_data <- conservation_report_raw_data |>
-    mutate(reporting_date = as.Date(reporting_month),
-           year = lubridate::year(reporting_date),
-           month = lubridate::month(reporting_date),
-           pwsid = public_water_system_id) |>
-    select(-`_full_text`, -reporting_month, -reporting_date,
-           supplier_name,
-           reported_final_commercial_agricultural_water,
-           reported_final_total_potable_water_production,
-           calculated_total_potable_water_production_gallons_ag_excluded,
-           reported_non_revenue_water, # leaks
-           reported_final_commercial_industrial_and_institutional_water,
-           reported_recycled_water, final_percent_residential_use, pwsid
-    ) |>
-    pivot_longer(cols = all_of(use_types), names_to = "use_type", values_to = "volume") |>
-    mutate(category = case_when(use_type %in% c("reported_final_total_potable_water_production",
-                                                "calculated_total_potable_water_production_gallons_ag_excluded") ~ "supply",
-                                use_type == "reported_non_revenue_water" ~ "demand",
-                                TRUE ~ "demand")) |>
-    transmute(report_name = "CR",
-              pwsid = pwsid,
-              supplier_name = supplier_name,
-              year = year,
-              month = month,
-              category = category,
-              use_type = gsub("_", " ", tolower(use_type)),
-              volume_af = ifelse(volume == "NaN", NA, as.numeric(volume)))
+  scale_from_MG_to_AF <- 3.06888
+  scale_from_CCF_to_AF <- 0.0023
+  scale_from_G_to_AF <- 1/325851
 
-  return(conservation_report_data)
+  conservation_report_data <- conservation_report_raw_data |>
+    mutate(reported_final_total_potable_water_production = ifelse(is.na(reported_final_total_potable_water_production),
+                                                                    reported_preliminary_total_potable_water_production,
+                                                                    reported_final_total_potable_water_production),
+           final_percent_residential_use = ifelse(is.na(final_percent_residential_use),
+                                                    preliminary_percent_residential_use,
+                                                    final_percent_residential_use),
+           reported_final_commercial_agricultural_water = ifelse(is.na(reported_final_commercial_agricultural_water),
+                                                                   reported_preliminary_commercial_agricultural_water,
+                                                                   reported_final_commercial_agricultural_water),
+           reported_final_commercial_industrial_and_institutional_water = ifelse(is.na(reported_final_commercial_industrial_and_institutional_water),
+                                                                                 reported_preliminary_commercial_industrial_and_institutional_wa,
+                                                                                     reported_final_commercial_industrial_and_institutional_water)) %>%
+    select(-c(reported_preliminary_total_potable_water_production,
+           preliminary_percent_residential_use,
+           reported_preliminary_commercial_agricultural_water,
+           reported_preliminary_commercial_industrial_and_institutional_wa,
+           county_under_drought_declaration, hydrologic_region, county,
+           water_shortage_level_indicator, dwr_state_standard_level_corresponding_to_stage,
+           calculated_r_gpcd, calculated_total_potable_water_production_gallons_ag_excluded,
+           water_shortage_contingency_stage_invoked, calculated_total_potable_water_production_gallons_2013_ag_exclu,
+           climate_zone, calculated_commercial_agricultural_water_gallons_2013, calculated_commercial_agricultural_water_gallons,
+           `_full_text`, reference_2014_population, total_population_served, `_id`, qualification)) %>%
+    pivot_longer(cols = -c(public_water_system_id, supplier_name, water_production_units, reporting_month, final_percent_residential_use),
+                 names_to = "use_type", values_to = "volume") %>%
+    transmute(report_name = "CR",
+              pwsid = public_water_system_id,
+              supplier_name = supplier_name,
+              year = lubridate::year(reporting_month),
+              month = lubridate::month(reporting_month),
+              final_percent_residential_use = final_percent_residential_use,
+              category = case_when(use_type %in% c("reported_final_total_potable_water_production",
+                                                   "calculated_total_potable_water_production_gallons_ag_excluded") ~ "supply",
+                                   use_type == "reported_non_revenue_water" ~ "demand",
+                                   TRUE ~ "demand"),
+              use_type = gsub("_", " ", tolower(use_type)),
+              volume_af = case_when(
+                water_production_units == "MG" ~ as.numeric(volume) * scale_from_MG_to_AF,
+                water_production_units == "G" ~ as.numeric(volume) * scale_from_G_to_AF,
+                water_production_units == "CCF" ~ as.numeric(volume) * scale_from_CCF_to_AF,
+                water_production_units == "AF" ~ as.numeric(volume)
+              )) |>
+    mutate(volume_af = ifelse(is.nan(volume_af), NA, volume_af))
+
+  residential_cr <- conservation_report_data |>
+    filter(category == "demand") |>
+    group_by(report_name, pwsid, supplier_name,
+             year, month, category) |>
+    summarize(total_demand = sum(volume_af, na.rm = TRUE),
+              final_prop_residential = as.numeric(final_percent_residential_use)/100,
+              residential = total_demand * final_prop_residential) |>
+    mutate(volume_af = ifelse(is.nan(residential), NA, residential),
+           use_type = "final residential use") |>
+    select(report_name, pwsid, supplier_name, year, month, category, use_type, volume_af)
+
+  final_conservation_report_data <- conservation_report_data |>
+    bind_rows(residential_cr) |>
+    select(-final_percent_residential_use)
+
+  return(final_conservation_report_data)
 
 }
 
