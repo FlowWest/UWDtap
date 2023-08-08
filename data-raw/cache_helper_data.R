@@ -58,39 +58,29 @@ cr_parameters <- tibble(report_name = "CR",
 
 data_source <- bind_rows(ear_parameters, uwmp_paramters, wla_parameters, cr_parameters)
 
-demand_lookup <- read_rds("data-raw/use_type_lookup.rds")
-supply_lookup <- read_rds("data-raw/supply_type_lookup.rds")
-use_type_lookup <- bind_rows(demand_lookup |>
-                               mutate(category = "demand"),
-                             supply_lookup |>
-                               mutate(category = "supply")) |>
-  mutate(report_name = ifelse(report_name == "WLR", "WLA", report_name),
-         category = ifelse(report_name == "EAR" & category == "supply", "supply total", category),
-         use_group = ifelse(use_group == "recycled water", "recycled", use_group))
-
-new_additions <- tibble(use_group = c("nonpotable", "surface water","imported/purchased",
-                                      "total volume", "groundwater", "recycled",
-                                      "sold", "total volume", "agricultural irrigation",
-                                      "landscape","residential", "other","sales transfers exchanges to other agencies",
-                                      "residential","commerical industrial institutional", "landscape", "total volume",
-                                      "surface water", "other", "surface water", "groundwater",
-                                      "sales transfers exchanges to other agencies", "sales transfers exchanges to other agencies",
-                                      "recycled", "other", "commerical industrial institutional", "losses", "total volume"),
-                        report_name = c(rep("EAR",17), rep("UWMP", 8), rep("CR",2), rep("WLA",1)),
-                        use_type = c("nonpotable", "sw", "purchased", "total",
-                                     "gw", "recycled", "sold", "total", "annuala",
-                                     "annuali", "annualsf", "annualo","annualop",
-                                     "annualmf","annualci","annualli","annualtotal",
-                                     "surface water", "stormwater use", "desalinated water",
-                                     "groundwater", "transfers to other agencies",
-                                     "sales to other agencies", "recycled water demand",
-                                     "potable and raw water","reported final commercial industrial and institutional water",
-                                     "reported non revenue water", "ws_water_supplied_vol_af"),
-                        category = c(rep("supply",7), "demand", rep("demand total", 9),
-                                     rep("supply",4), rep("demand",2), rep("demand total",2), rep("demand",2), "supply total"))
-
-use_type_lookup <- use_type_lookup |>
-  bind_rows(new_additions)
+# Use Types Not Mapped
+# CR
+# calculated total potable water production gallons ag excluded
+# final percent residential use
+# EAR
+# c("percentrecycledsf", "percentrecycledmf",
+#   "percentrecycledci", "percentrecycledi", "percentrecycledli",
+#   "percentrecycledo", "percentrecycleda", "percentrecycledop",
+#   "percentnonpotablesf", "percentnonpotablemf", "percentnonpotableci",
+#   "percentnonpotablei", "percentnonpotableli", "percentnonpotableo",
+#   "percentnonpotablea", "percentnonpotableop", "ciiirrigationvolume",
+#   "percentparklands", "percenttrees", "reportnames", "ciiirrigationcomments",
+#   "comments", "maxdaytotal", "ptgw", "maxdaygw", "maxdaysw", "maxdaypurchased",
+#   "maxdaysold", "maxdaydate")
+# WLA
+# ac_auth_consumption_vol_af
+# wl_unauth_cons_vol_af
+# wl_cust_mtr_inacc_vol_af
+# wl_apparent_losses_vol_af
+# wl_real_losses_vol_af
+# UWMP
+# retail demand for use by agencies that are primarily wholesalers with a small volume of retail sales
+use_type_lookup <- read_rds("data-raw/use_type_lookup.rds")
 
 # Currently takes a few minutes to create the ear summary so using
 # static version of ear summary for performance
