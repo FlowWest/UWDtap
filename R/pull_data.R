@@ -82,7 +82,7 @@ get_wla_data <- function() {
   download.file("https://wuedata.water.ca.gov/public/awwa_data_export/water_audit_data_conv_to_af.xls",
                 destfile = temp,
                 quiet = TRUE)
-  wla_data_raw <- read_delim(temp)
+  wla_data_raw <- read_delim(temp, delim = "\t")
   unlink(temp)
 
   # select columns for supply and demand
