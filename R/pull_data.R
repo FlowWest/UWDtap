@@ -112,7 +112,9 @@ get_wla_data <- function() {
 
   # select supply use cases and supplier name, reporting year, and volume
   wla_supply <- wla_data_raw |>
-    select(WATER_SUPPLIER_NAME, WUEDATA_PLAN_REPORT_YEAR, VOLUME_REPORTING_UNITS, PWS_ID_OR_OTHER_ID, all_of(supply_fields)) |>
+    mutate(WS_OWN_SOURCES_VOL_AF = as.numeric(WS_OWN_SOURCES_VOL_AF)) |>
+    select(WATER_SUPPLIER_NAME, WUEDATA_PLAN_REPORT_YEAR, VOLUME_REPORTING_UNITS,
+           PWS_ID_OR_OTHER_ID, all_of(supply_fields)) |>
     pivot_longer(cols = all_of(supply_fields), names_to = "use_type", values_to = "volume") |>
     transmute(report_name = "WLA",
               pwsid = PWS_ID_OR_OTHER_ID,
